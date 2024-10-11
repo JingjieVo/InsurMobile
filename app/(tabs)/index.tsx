@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ImageBackground, Image } from "react-native";
+import { View, Text, StyleSheet, ImageBackground, Image, StatusBar } from "react-native";
 
 import backgroundImage from "../../assets/images/background.jpg";
 import userImage from "../../assets/images/userimage.jpg";
@@ -42,8 +42,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
-    paddingHorizontal: 12
+    paddingHorizontal: 12,
+    marginTop: StatusBar.currentHeight,
   },
   image: {
     flex: 1,
