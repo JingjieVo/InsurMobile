@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react";
+import { View, Text } from "react-native";
 
 export default function account() {
   return (
-    <div>
-      
-    </div>
-  )
+    <View>
+      <Text>meomeo</Text>
+    </View>
+  );
 }

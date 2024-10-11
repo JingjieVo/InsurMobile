@@ -17,11 +17,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: styles.tabBar,
         tabBarBackground: () => (
-          <BlurView
-            tint="light"
-            intensity={80}
-            style={{ flex: 1 }}
-          />
+          <BlurView tint="light" intensity={80} style={{ flex: 1 }} />
         ),
       }}
     >
@@ -38,11 +34,14 @@ export default function TabLayout() {
           // Sử dụng `tabBarLabel` để tùy chỉnh title
           tabBarLabel: ({ focused, color }) => (
             <Text
-              style={{
-                color: focused ? "#065DF9" : "gray", // Màu sắc thay đổi dựa vào trạng thái
-                fontSize: 14, // Kích thước font chữ
-                fontWeight: "bold", // Độ dày font chữ
-              }}
+              style={[
+                styles.glowingText,
+                {
+                  color: focused ? "#065DF9" : "gray", // Màu sắc thay đổi dựa vào trạng thái
+                  fontSize: 14, // Kích thước font chữ
+                  fontWeight: "bold", // Độ dày font chữ
+                },
+              ]}
             >
               Trang chủ
             </Text>
@@ -105,9 +104,8 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    borderTopWidth: 0,
     backgroundColor: "transparent",
-    elevation: 2,
+    elevation: 0,
     height: 70,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
@@ -115,5 +113,17 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     paddingBottom: 10, // Cách đều nội dung
     paddingTop: 10,
+  },
+  glowingText: {
+    color: "#fff0",
+    textShadowColor: "rgba(255,255,255,0.8)",
+    textShadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    textShadowRadius: 10,
+    fontSize: 14,
+    fontWeight: "600",
+    textTransform: "capitalize",
   },
 });

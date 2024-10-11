@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "InsurTechMobile",
-    "slug": "InsurTechMobile",
+    "slug": "insurmobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,14 +13,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.InsurTechMobile"
+      "package": "com.anonymous.InsurTechMobile",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -32,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "903b121a-776a-466a-9deb-1f11905b8b5b"
+      }
+    },
+    "owner": "jingjie",
+    "updates": {
+      "url": "https://u.expo.dev/903b121a-776a-466a-9deb-1f11905b8b5b"
     }
   }
 }
