@@ -26,16 +26,16 @@ export default function TabLayout() {
         options={{
           title: "Trang chủ",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "home" : "home-outline"}
-              color={focused ? "#065DF9" : "gray"}
-            />
+            <Foundation name={"home"} size={24} color={focused ?  "#065DF9" : "gray"} />
+            // <TabBarIcon
+            //   name={focused ? "home" : "home-outline"}
+            //   color={focused ? "#065DF9" : "gray"}
+            // />
           ),
           // Sử dụng `tabBarLabel` để tùy chỉnh title
           tabBarLabel: ({ focused, color }) => (
             <Text
               style={[
-                styles.glowingText,
                 {
                   color: focused ? "#065DF9" : "gray", // Màu sắc thay đổi dựa vào trạng thái
                   fontSize: 14, // Kích thước font chữ
@@ -48,7 +48,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="explore"
         options={{
           title: "Tin tức",
@@ -71,17 +71,18 @@ export default function TabLayout() {
             </Text>
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="account"
         options={{
           title: "Tài khoản",
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "accessibility" : "accessibility-outline"}
-              color={focused ? "#065DF9" : "gray"}
-              style={{}}
-            />
+            <Foundation name={"torso"} size={24} color={focused ?  "#065DF9" : "gray"} />
+            // <TabBarIcon
+            //   name={focused ? "accessibility" : "accessibility-outline"}
+            //   color={focused ? "#065DF9" : "gray"}
+            //   style={{}}
+            // />
           ),
           // Sử dụng `tabBarLabel` để tùy chỉnh title
           tabBarLabel: ({ focused, color }) => (
@@ -113,17 +114,5 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     paddingBottom: 10, // Cách đều nội dung
     paddingTop: 10,
-  },
-  glowingText: {
-    color: "#fff0",
-    textShadowColor: "rgba(255,255,255,0.8)",
-    textShadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    textShadowRadius: 10,
-    fontSize: 14,
-    fontWeight: "600",
-    textTransform: "capitalize",
   },
 });
