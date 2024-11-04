@@ -6,6 +6,7 @@ import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Text, StyleSheet } from "react-native";
+import { TabsBarHeight } from "@/constants/Height";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -17,7 +18,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: styles.tabBar,
         tabBarBackground: () => (
-          <BlurView tint="light" intensity={80} style={{ flex: 1 }} />
+          <BlurView tint="light" intensity={100} style={{ flex: 1 }} />
         ),
       }}
     >
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "transparent",
     elevation: 0,
-    height: 70,
+    height: TabsBarHeight,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
