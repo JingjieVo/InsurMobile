@@ -1,6 +1,7 @@
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import ShieldUserIcon from "@/components/icons/shield-user.svg";
 import ShieldPlusIcon from "@/components/icons/shield-plus.svg";
+import { Link, router } from "expo-router";
 export default function insurBadge() {
   return (
     <View>
@@ -9,7 +10,7 @@ export default function insurBadge() {
         <Text style={styles.text}>Bạn chưa có thẻ bảo hiểm</Text>
       </View>
       <View style={styles.buyButtonContainer}>
-        <TouchableOpacity style={styles.buyButton}>
+        <TouchableOpacity onPress={() => router.navigate("/insurance")} style={styles.buyButton}>
           <ShieldPlusIcon color={'white'} width={25} height={25}/>
           <Text style={{ color: "white", fontWeight: "500", fontSize: 16, paddingHorizontal: 5 }}>
             Mua bảo hiểm
