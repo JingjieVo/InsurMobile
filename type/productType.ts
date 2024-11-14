@@ -19,6 +19,7 @@ interface Term {
     applicableObject: string;
     scope: string;
     exclusion: string;
+    highlight: string;
     price: number;
     thumbnail: string;
     attachment: string;

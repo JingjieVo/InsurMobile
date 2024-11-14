@@ -1,33 +1,44 @@
 import { Product } from "@/type/productType";
-import { TouchableOpacity, View, Image, Text, StyleSheet } from "react-native";
+import { router } from "expo-router";
+import React from "react";
+import {
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  useWindowDimensions,
+  LogBox,
+} from "react-native";
+import RenderHtml from "react-native-render-html";
+import insurLogo from "@/assets/images/react-logo.png";
 
-export default function InsuraceCard({product} : {product : Product}) {
+const source = {
+  html: `
+<div><ol><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li></ol></div>`,
+};
+
+export default function InsuraceCard({ product }: { product: Product }) {
+  const { width } = useWindowDimensions();
   return (
     <View style={styles.contentContainer}>
       <View style={styles.content}>
         <View style={styles.insuranceCard}>
-          <Text style={styles.cardTitle}>{product.name}</Text>
-          <Text style={styles.cardAmount}>901.250.000 vnd</Text>
-          <Image
-            source={{ uri: "https://example.com/logo.png" }}
-            style={styles.logo}
-          />
+          <View>
+            <Text style={styles.cardTitle}>
+              {product.name} {product.id}
+            </Text>
+            <Text style={styles.cardAmount}>901.250.000 vnd</Text>
+          </View>
+          <Image source={insurLogo} style={styles.logo} />
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Điểm nổi bật</Text>
-          <Text style={styles.bulletPoint}>
-            {product.description}
-          </Text>
-          <Text style={styles.bulletPoint}>
-            • Gồm 4 hạn mức số tiền bảo hiểm ...
-          </Text>
-          <Text style={styles.bulletPoint}>
-            • Không yêu cầu khai báo tình trạng sức khỏe ...
-          </Text>
-          <Text style={styles.bulletPoint}>
-            • Quy trình tham gia và bồi thường 100% trực tuyến ...
-          </Text>
+          <RenderHtml
+            contentWidth={width}
+            source={{ html: product.highlight }}
+          />
         </View>
 
         <View style={styles.feeSection}>
@@ -36,7 +47,15 @@ export default function InsuraceCard({product} : {product : Product}) {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.viewMoreButton}>
+          <TouchableOpacity
+            style={styles.viewMoreButton}
+            onPress={() =>
+              router.navigate({
+                pathname: `/insurance/[id]`,
+                params: { id: product.id.toString() },
+              })
+            }
+          >
             <Text style={styles.buttonText}>Xem thêm</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.introduceButton}>
@@ -67,9 +86,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   insuranceCard: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
     backgroundColor: "#002850",
     borderRadius: 15,
-    padding: 20,
+    padding: 16,
     marginBottom: 20,
   },
   cardTitle: {
@@ -85,9 +108,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 50,
     height: 50,
-    position: "absolute",
-    top: 10,
-    right: 10,
   },
   section: {
     marginBottom: 20,
