@@ -5,7 +5,7 @@
   "scripts": {
     "start": "expo start --dev-client",
     "dev": "expo start",
-    "dev:hardware" : "npx expo start --tunnel",
+    "dev:hardware": "npx expo start --tunnel",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
@@ -20,6 +20,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",
+    "dotenv": "^16.4.5",
     "eas-cli": "^12.5.1",
     "expo": "^51.0.37",
     "expo-blur": "~13.0.2",

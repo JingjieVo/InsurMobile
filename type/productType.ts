@@ -7,7 +7,7 @@ interface Term {
     icon: string;
   }
   
-  export interface Product {
+  export interface ProductDetail {
     id: number;
     categoryId: number;
     fromAge: number;
@@ -26,6 +26,25 @@ interface Term {
     mainTerms: Term[];
     sideTerms: Term[];
   }
+  interface ProductItem {
+    id: number;
+    name: string;
+    highlight: string;
+    price: number;
+    thumbnail: string;
+    icon: string;
+  }
   
+  interface Product {
+    content: ProductItem[];
+    pageNumber: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+    last: boolean;
+    first: boolean;
+  }
   export type ProductsResponse = Product[];
+  
+  export type ProductDetailResponse = ProductDetail;
   
