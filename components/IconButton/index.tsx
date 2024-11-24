@@ -26,7 +26,14 @@ export default function IconButton(props: IconButtonProps) {
           fill={props.isActived ? "white" : "gray"}
         />
       </TouchableOpacity>
-      <Text style={styles.text}>{props.buttonName}</Text>
+      <Text
+        style={[
+          styles.text,
+          { color: props.isActived ? "#074DC9" : "#FEFEFE" },
+        ]}
+      >
+        {props.buttonName}
+      </Text>
     </View>
   );
 }

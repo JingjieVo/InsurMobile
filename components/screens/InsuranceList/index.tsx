@@ -13,6 +13,8 @@ import { BlurView } from "expo-blur";
 import InsuraceCard from "@/components/InsuranceCard";
 import backgroundImage from "@/assets/images/background.jpg";
 import { getProducts } from "@/services/productService";
+import ScreenHeader from "@/components/Share/ScreenHeader";
+import ScreenContainer from "@/components/Share/ScreenContainer";
 
 export default function InsuranceScreen() {
   const [products, setProducts] = useState([]);
@@ -21,33 +23,27 @@ export default function InsuranceScreen() {
     const fetchData = async () => {
       try {
         const data = await getProducts();
-        setProducts(data);
-        console.log(data);
+        setProducts(data.content);
+        // console.log(data);
       } catch (error) {
-        console.error('Failed to fetch products:', error);
+        console.error("Failed to fetch products:", error);
       }
     };
 
     fetchData();
   }, []);
   return (
-    <ImageBackground
-      source={backgroundImage}
-      resizeMode="cover"
-      style={styles.image}
-    >
-      <BlurView intensity={120} tint="light" style={styles.container}>
-        {/* Header with Blur */}
-        <BlurView intensity={120} tint="light" style={styles.header}>
-          <Text style={styles.headerTitle}>Bảo Hiểm Sức Khoẻ</Text>
-        </BlurView>
+    <ScreenContainer>
+      {/* Header with Blur */}
+      <ScreenHeader screenTitle="Bảo hiểm sức khỏe" />
 
-        {/* Content */}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {products.map((item, index) => <InsuraceCard key={index} product={item}/>)}
-        </ScrollView>
-      </BlurView>
-    </ImageBackground>
+      {/* Content */}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {products.map((item, index) => (
+          <InsuraceCard key={index} product={item} />
+        ))}
+      </ScrollView>
+    </ScreenContainer>
   );
 }
 
@@ -60,16 +56,6 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#fff",
-  },
-  header: {
-    height: 68,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
   },
   contentContainer: {
     margin: 18,
