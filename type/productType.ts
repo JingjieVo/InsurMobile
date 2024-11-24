@@ -26,7 +26,7 @@ interface Term {
     mainTerms: Term[];
     sideTerms: Term[];
   }
-  interface ProductItem {
+  export interface ProductItem {
     id: number;
     name: string;
     highlight: string;
@@ -35,7 +35,7 @@ interface Term {
     icon: string;
   }
   
-  interface Product {
+  export interface Products {
     content: ProductItem[];
     pageNumber: number;
     pageSize: number;
@@ -44,7 +44,7 @@ interface Term {
     last: boolean;
     first: boolean;
   }
-  export type ProductsResponse = Product[];
+  export type ProductsResponse = Products;
   
   export type ProductDetailResponse = ProductDetail;
   

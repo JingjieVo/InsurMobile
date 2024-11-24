@@ -15,15 +15,16 @@ import backgroundImage from "@/assets/images/background.jpg";
 import { getProducts } from "@/services/productService";
 import ScreenHeader from "@/components/Share/ScreenHeader";
 import ScreenContainer from "@/components/Share/ScreenContainer";
+import { ProductsResponse } from "@/type/productType";
 
 export default function InsuranceScreen() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<ProductsResponse>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getProducts();
-        setProducts(data.content);
+        setProducts(data);
         // console.log(data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -39,7 +40,7 @@ export default function InsuranceScreen() {
 
       {/* Content */}
       <ScrollView showsVerticalScrollIndicator={false}>
-        {products.map((item, index) => (
+        {products?.content.map((item, index) => (
           <InsuraceCard key={index} product={item} />
         ))}
       </ScrollView>

@@ -12,7 +12,7 @@ export default function insurBadge() {
       <View style={styles.buyButtonContainer}>
         <TouchableOpacity onPress={() => router.navigate("/insurance")} style={styles.buyButton}>
           <ShieldPlusIcon color={'white'} width={25} height={25}/>
-          <Text style={{ color: "white", fontWeight: "500", fontSize: 16, paddingHorizontal: 5 }}>
+          <Text style={{ color: "white", fontWeight: "500", fontSize: 24, paddingHorizontal: 5 }}>
             Mua bảo hiểm
           </Text>
         </TouchableOpacity>
@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "white",
     margin: 10,
-    minHeight: 160,
-    maxHeight: 170,
+    minHeight: 250,
+    maxHeight: 260,
     borderRadius: 15,
     display: "flex",
     justifyContent: "center",
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   text: {
     color: "gray",
     fontWeight: "600",
+    fontSize: 24,
   },
   buyButtonContainer: {
     padding: 10,
@@ -46,9 +47,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     alignItems: "center",
     justifyContent: "center",
-    height: 40,
+    height: 70,
     backgroundColor: "#387EFA",
     borderRadius: 15,
     flexDirection: 'row',
+    marginBottom: 5,
   },
 });

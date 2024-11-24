@@ -1,31 +1,34 @@
 import BackButton from "@/components/Share/BackButton";
 import ScreenContainer from "@/components/Share/ScreenContainer";
-import ScreenHeader from "@/components/Share/ScreenHeader";
 
-import { View, Text, StyleSheet, StatusBar, Image } from "react-native";
 import insurLogo from "@/assets/images/react-logo.png";
-import { useEffect, useState } from "react";
-import { Product } from "@/type/productType";
+import TermIcon from "@/components/icons/term.svg";
+import { globalStyles } from "@/components/style/GlobalStyle";
 import { getProductById } from "@/services/productService";
+import { ProductDetailResponse } from "@/type/productType";
+import { useEffect, useState } from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import BottomBuyInsur from "./BottomBuyInsur";
+import TermCard from "./TermCard";
 
 export default function InsuranceDetailsScreen(props: { id: string }) {
-  const [product, setProduct] = useState<Product>()
-  useEffect( () => {
+  const [product, setProduct] = useState<ProductDetailResponse>();
+  useEffect(() => {
     const fetch = async () => {
       try {
         const data = await getProductById(props.id);
         setProduct(data);
-        // console.log(data);
+        console.log(data);
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
-    }
+    };
     fetch();
-  },[])
+  }, []);
   return (
     <ScreenContainer>
       <View style={styles.backButton}>
-        <BackButton />
+        <BackButton fill="white"/>
       </View>
       <View style={styles.insuranceCard}>
         <View>
@@ -36,12 +39,89 @@ export default function InsuranceDetailsScreen(props: { id: string }) {
         </View>
         <Image source={insurLogo} style={styles.logo} />
       </View>
-      <Text>Details of insurance {props.id} </Text>
+      {/* <Text>Details of insurance {props.id} </Text> */}
+      <ScrollView
+        style={[globalStyles.contentPadding, styles.backgroundContent]}
+      >
+        <Text style={{ fontSize: 30, fontWeight: "800", marginVertical: 20 }}>Quyền lợi chính</Text>
+        {product?.mainTerms?.length !== 0 ? (
+          product?.mainTerms?.map((term, index) => (
+            <TermCard
+              key={term.id}
+              termName={term.name}
+              termAmount={term.amount.toString()}
+              icon={TermIcon}
+            />
+          ))
+        ) : (
+          <View
+            style={{
+              minHeight: 150,
+              flex: 1,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
+          >
+            <Text
+              style={{
+                color: "red",
+                fontSize: 20,
+                fontStyle: "italic",
+                textAlign: "center",
+              }}
+            >
+              Gói bảo hiểm hiện không có quyền lợi nào
+            </Text>
+          </View>
+        )}
+        <Text style={{ fontSize: 30, fontWeight: "800", marginVertical: 20 }}>Quyền lợi phụ</Text>
+        {product?.sideTerms?.length !== 0 ? (
+          product?.sideTerms?.map((term, index) => (
+            <TermCard
+              key={term.id}
+              termName={term.name}
+              termAmount={term.amount.toString()}
+              icon={TermIcon}
+            />
+          ))
+        ) : (
+          <View
+            style={{
+              minHeight: 150,
+              flex: 1,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+            }}
+          >
+            <Text
+              style={{
+                color: "red",
+                fontSize: 20,
+                fontStyle: "italic",
+                textAlign: "center",
+              }}
+            >
+              Gói bảo hiểm hiện không có quyền lợi nào
+            </Text>
+          </View>
+        )}
+      </ScrollView>
+      <BottomBuyInsur price={product?.price.toString() || "None"}/>
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundContent: {
+    flex: 1,
+    backgroundColor: "#F2F6FF",
+  },
   backButton: {
     position: "absolute",
     top: 18,
@@ -49,14 +129,19 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
   insuranceCard: {
+    // position: 'static',
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#002850",
+    height: 200,
     paddingTop: 64,
-    paddingBottom: 32,
-    marginBottom: 20,
+    // paddingBottom: 32,
+    paddingHorizontal: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    // marginBottom: 20,
   },
   cardTitle: {
     fontSize: 16,

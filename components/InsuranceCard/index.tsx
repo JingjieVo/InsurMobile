@@ -1,4 +1,4 @@
-import { Product } from "@/type/productType";
+import { ProductItem } from "@/type/productType";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -18,7 +18,7 @@ const source = {
 <div><ol><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li></ol></div>`,
 };
 
-export default function InsuraceCard({ product }: { product: Product }) {
+export default function InsuraceCard({ product }: { product: ProductItem }) {
   const { width } = useWindowDimensions();
   return (
     <View style={styles.contentContainer}>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: "#000",
+    color: "white",
     fontWeight: "bold",
   },
 });

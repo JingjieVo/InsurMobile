@@ -15,8 +15,8 @@ export default function Header() {
       >
         <Image style={styles.userImage} source={userImage} />
         <View style={{ marginLeft: 5 }}>
-          <Text style={{ fontWeight: "500" }}>Welcome</Text>
-          <Link style={{ color: "white" }} href={"/(tabs)/account"}>
+          <Text style={{ fontWeight: "500", fontSize: 16 }}>Welcome</Text>
+          <Link style={{ color: "white", fontSize: 20 }} href={"/(tabs)/account"}>
             You can login here!
           </Link>
         </View>
@@ -30,8 +30,8 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   userImage: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     borderRadius: 25,
   },
   headerSection: {
