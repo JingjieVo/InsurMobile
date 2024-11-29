@@ -17,9 +17,10 @@ import * as ImagePicker from "react-native-image-picker";
 import uploadImg from "@/assets/images/guest_avatar.png";
 import DateTimePicker from "@react-native-community/datetimepicker";
 interface FormData {
+  dateOfBirth: any;
   fullName: string | undefined;
   isInsured: boolean | undefined;
-  gender: string;
+  gender: "male" | "female";
   phone: string;
   email: string;
   province: string;
@@ -53,7 +54,7 @@ const BuyInsuranceScreen: React.FC = () => {
     frontImage: null,
     backImage: null,
     isInsured: true,
-    gender: "male" | "female",
+    gender: "male",
     fullName: "",
     dateOfBirth: Date,
   });
