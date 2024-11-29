@@ -21,8 +21,8 @@ export default function IconButton(props: IconButtonProps) {
         }}
       >
         <props.icon
-          width={60}
-          height={60}
+          width={40}
+          height={40}
           fill={props.isActived ? "white" : "gray"}
         />
       </TouchableOpacity>

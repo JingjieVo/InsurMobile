@@ -5,7 +5,7 @@ import Foundation from "@expo/vector-icons/Foundation";
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { TabsBarHeight } from "@/constants/Height";
 
 export default function TabLayout() {
@@ -18,7 +18,14 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: styles.tabBar,
         tabBarBackground: () => (
-          <BlurView tint="light" intensity={100} style={{ flex: 1 }} />
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            }}
+          />
         ),
       }}
     >
@@ -27,7 +34,11 @@ export default function TabLayout() {
         options={{
           title: "Trang chủ",
           tabBarIcon: ({ color, focused }) => (
-            <Foundation name={"home"} size={24} color={focused ?  "#065DF9" : "gray"} />
+            <Foundation
+              name={"home"}
+              size={20}
+              color={focused ? "#065DF9" : "gray"}
+            />
             // <TabBarIcon
             //   name={focused ? "home" : "home-outline"}
             //   color={focused ? "#065DF9" : "gray"}
@@ -78,7 +89,11 @@ export default function TabLayout() {
         options={{
           title: "Tài khoản",
           tabBarIcon: ({ color, focused }) => (
-            <Foundation name={"torso"} size={24} color={focused ?  "#065DF9" : "gray"} />
+            <Foundation
+              name={"torso"}
+              size={20}
+              color={focused ? "#065DF9" : "gray"}
+            />
             // <TabBarIcon
             //   name={focused ? "accessibility" : "accessibility-outline"}
             //   color={focused ? "#065DF9" : "gray"}
@@ -106,14 +121,12 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
-    backgroundColor: "transparent",
-    elevation: 0,
+    bottom: 0,
+    // backgroundColor: "transparent",
     height: TabsBarHeight,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+
     paddingBottom: 10, // Cách đều nội dung
     paddingTop: 10,
+    // marginHorizontal: 10,
   },
 });

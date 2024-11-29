@@ -21,8 +21,8 @@ export default function TermCard(props: TermCardProps) {
           />
         </View>
         <View style={{flex: 2}}>
-          <Text style={{fontWeight: 'medium', fontSize: 16}}>{props.termName}</Text>
-          <Text style={{fontWeight: '900', fontSize: 24}}>{props.termAmount} VND</Text>
+          <Text style={{fontWeight: 'medium', fontSize: 12}}>{props.termName}</Text>
+          <Text style={{fontWeight: '900', fontSize: 20}}>{props.termAmount} VND</Text>
         </View>
       </View>
     </TouchableOpacity>

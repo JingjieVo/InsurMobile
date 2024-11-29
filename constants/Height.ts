@@ -1,1 +1,1 @@
-export const TabsBarHeight = 75
+export const TabsBarHeight = 60

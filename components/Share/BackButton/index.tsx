@@ -10,7 +10,7 @@ interface BackButtonProps {
 export default function BackButton(props : BackButtonProps) {
   return (
     <TouchableOpacity onPress={() => router.back()}>
-      <AntDesign name="leftcircle" size={50} color={props.fill} />
+      <AntDesign name="leftcircle" size={40} color={props.fill} />
     </TouchableOpacity>
   );
 }

@@ -17,7 +17,7 @@ SplashScreen.preventAutoHideAsync();
 LogBox.ignoreLogs([
   "TNodeChildrenRenderer: Support for defaultProps will be removed from function components",
   "MemoizedTNodeRenderer: Support for defaultProps will be removed from memo components",
-  "TRenderEngineProvider: Support for defaultProps will be removed from function components in a future major release."
+  "TRenderEngineProvider: Support for defaultProps will be removed from function components in a future major release.",
 ]);
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -45,6 +45,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="insurance" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="login" options={{ headerShown: false }} /> */}
       </Stack>
     </ThemeProvider>
   );

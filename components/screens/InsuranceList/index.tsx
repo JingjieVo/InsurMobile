@@ -17,7 +17,7 @@ import ScreenHeader from "@/components/Share/ScreenHeader";
 import ScreenContainer from "@/components/Share/ScreenContainer";
 import { ProductsResponse } from "@/type/productType";
 
-export default function InsuranceScreen() {
+export default function InsuranceList() {
   const [products, setProducts] = useState<ProductsResponse>();
 
   useEffect(() => {
@@ -39,11 +39,17 @@ export default function InsuranceScreen() {
       <ScreenHeader screenTitle="Bảo hiểm sức khỏe" />
 
       {/* Content */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {products?.content.map((item, index) => (
-          <InsuraceCard key={index} product={item} />
-        ))}
-      </ScrollView>
+      {products?.content.length === 0 ? (
+        <View>
+          <Text>Không tìm thấy sản phẩm nào</Text>
+        </View>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {products?.content.map((item, index) => (
+            <InsuraceCard key={index} product={item} />
+          ))}
+        </ScrollView>
+      )}
     </ScreenContainer>
   );
 }

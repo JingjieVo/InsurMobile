@@ -18,7 +18,7 @@ export default function InsuranceDetailsScreen(props: { id: string }) {
       try {
         const data = await getProductById(props.id);
         setProduct(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
@@ -43,7 +43,7 @@ export default function InsuranceDetailsScreen(props: { id: string }) {
       <ScrollView
         style={[globalStyles.contentPadding, styles.backgroundContent]}
       >
-        <Text style={{ fontSize: 30, fontWeight: "800", marginVertical: 20 }}>Quyền lợi chính</Text>
+        <Text style={{ fontSize: 20, fontWeight: "800", marginVertical: 20 }}>Quyền lợi chính</Text>
         {product?.mainTerms?.length !== 0 ? (
           product?.mainTerms?.map((term, index) => (
             <TermCard
@@ -68,7 +68,7 @@ export default function InsuranceDetailsScreen(props: { id: string }) {
             <Text
               style={{
                 color: "red",
-                fontSize: 20,
+                fontSize: 16,
                 fontStyle: "italic",
                 textAlign: "center",
               }}
@@ -77,7 +77,7 @@ export default function InsuranceDetailsScreen(props: { id: string }) {
             </Text>
           </View>
         )}
-        <Text style={{ fontSize: 30, fontWeight: "800", marginVertical: 20 }}>Quyền lợi phụ</Text>
+        <Text style={{ fontSize: 20, fontWeight: "800", marginVertical: 20 }}>Quyền lợi phụ</Text>
         {product?.sideTerms?.length !== 0 ? (
           product?.sideTerms?.map((term, index) => (
             <TermCard
@@ -102,7 +102,7 @@ export default function InsuranceDetailsScreen(props: { id: string }) {
             <Text
               style={{
                 color: "red",
-                fontSize: 20,
+                fontSize: 16,
                 fontStyle: "italic",
                 textAlign: "center",
               }}
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "#002850",
-    height: 200,
+    height: 150,
     paddingTop: 64,
     // paddingBottom: 32,
     paddingHorizontal: 20,

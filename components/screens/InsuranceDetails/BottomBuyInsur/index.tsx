@@ -25,24 +25,25 @@ export default function BottomBuyInsur(props: BottomBuyInsurProps) {
             {props.price} VND
           </Text>
         </View>
-        <View style={{ flexDirection: "row", gap: 10  }}>
+        <View style={{ flexDirection: "row", gap: 10 }}>
           <View
             style={{
               width: "50%",
               flexDirection: "row",
               backgroundColor: "#F2F6FF",
               justifyContent: "center",
-              alignItems: 'center',
+              alignItems: "center",
               borderRadius: 20,
-              gap: 5
-
+              gap: 5,
             }}
           >
-            <View style={{padding: 10}}>
-              <Text style={{fontSize: 16}}>Thời hạn bảo hiểm</Text>
-              <Text style={{fontSize: 20, fontWeight: '600'}}>1 Năm</Text>
+            <View style={{ padding: 10 }}>
+              <Text style={{ fontSize: 16 }}>Thời hạn bảo hiểm</Text>
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>1 Năm</Text>
             </View>
-            <AntDesign name="down" size={24} color="black" />
+            <TouchableOpacity>
+              <AntDesign name="down" size={24} color="black" />
+            </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={{
@@ -54,7 +55,9 @@ export default function BottomBuyInsur(props: BottomBuyInsurProps) {
               borderRadius: 20,
             }}
           >
-            <Text style={{color: 'white', fontSize: 20, fontWeight: '600'}}>Mua ngay</Text>
+            <Text style={{ color: "white", fontSize: 20, fontWeight: "600" }}>
+              Mua ngay
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

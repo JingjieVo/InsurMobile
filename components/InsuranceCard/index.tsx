@@ -70,6 +70,7 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
 const styles = StyleSheet.create({
   contentContainer: {
     margin: 18,
+    minHeight: 500,
     backgroundColor: "white",
     borderRadius: 10,
     shadowColor: "#000",
@@ -84,6 +85,8 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
+    flex: 1,
+    justifyContent: 'space-evenly'
   },
   insuranceCard: {
     display: "flex",

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 
 export const globalStyles = StyleSheet.create({
   contentPadding: {
@@ -21,7 +21,7 @@ export const globalStyles = StyleSheet.create({
     elevation: 5,
   },
   termCardContent: {
-    padding: 24,
+    padding: 12,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -31,7 +31,7 @@ export const globalStyles = StyleSheet.create({
   bottomBuyInsur: {
     backgroundColor: "#FFFFFF",
     flex: 1,
-    maxHeight: 200,
+    maxHeight: 150,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     shadowColor: "#000",
@@ -46,5 +46,27 @@ export const globalStyles = StyleSheet.create({
   },
   bottomBuyInsurContent: {
     padding: 20,
+  },
+  accountScreenButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    marginBottom: 12,
+    padding: 8,
+    borderRadius: 16,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 6,
+  },
+  imageBackground: {
+    flex: 1,
+    justifyContent: "center",
   }
 });
