@@ -8,6 +8,7 @@ import {
   StyleSheet,
   SafeAreaView,
   ActivityIndicator,
+  StatusBar,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -72,13 +73,13 @@ export default function HomeScreen() {
   }
 
   // Nếu không có dữ liệu người dùng
-  if (!user) {
-    return (
-      <View>
-        <Text>No user data available</Text>
-      </View>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <View>
+  //       <Text>No user data available</Text>
+  //     </View>
+  //   );
+  // }
   return (
     <LinearGradient
       colors={["#E6EEFF", "#FFFFFF"]}
@@ -194,6 +195,7 @@ export default function HomeScreen() {
 
 export const homeStyles = StyleSheet.create({
   container: {
+    paddingTop: StatusBar.currentHeight,
     flex: 1,
     paddingBottom: TabsBarHeight,
   },
