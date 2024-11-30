@@ -161,7 +161,7 @@ export default function InsuranceScreen() {
           />
         </View> */}
 
-          <TouchableOpacity onPress={() => router.push('/buyinsurance')} style={styles.filterButton}>
+          <TouchableOpacity onPress={() => router.push('/insurance')} style={styles.filterButton}>
             <Text style={styles.filterButtonText}>Lọc sản phẩm</Text>
           </TouchableOpacity>
         </ScrollView>

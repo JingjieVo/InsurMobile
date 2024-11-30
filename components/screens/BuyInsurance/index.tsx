@@ -1,25 +1,27 @@
+import uploadImg from "@/assets/images/guest_avatar.png";
+import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
   Image,
   Platform,
   SafeAreaView,
+  ScrollView,
+  StyleSheet,
   Switch,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "react-native-image-picker";
-import uploadImg from "@/assets/images/guest_avatar.png";
-import DateTimePicker from "@react-native-community/datetimepicker";
 interface FormData {
   fullName: string | undefined;
   isInsured: boolean | undefined;
-  gender: string;
+  gender: "male" | "female";
   phone: string;
   email: string;
   province: string;
@@ -31,6 +33,7 @@ interface FormData {
   idNumber: string;
   frontImage: string | null;
   backImage: string | null;
+  dateOfBirth: Date;
 }
 
 interface FormErrors {
@@ -53,9 +56,9 @@ const BuyInsuranceScreen: React.FC = () => {
     frontImage: null,
     backImage: null,
     isInsured: true,
-    gender: "male" | "female",
+    gender: "male",
     fullName: "",
-    dateOfBirth: Date,
+    dateOfBirth: new Date(),
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -97,8 +100,11 @@ const BuyInsuranceScreen: React.FC = () => {
     <LinearGradient colors={["#E6EEFF", "#FFFFFF"]} style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
-          <TouchableOpacity style={styles.backButton}>
-            <Text style={styles.backButtonText}>{"<"}</Text>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color="black" />
           </TouchableOpacity>
 
           <Text style={styles.title}>Thông tin người được bảo hiểm</Text>
@@ -170,7 +176,7 @@ const BuyInsuranceScreen: React.FC = () => {
             style={styles.datePickerButton}
             onPress={() => setShowDatePicker(true)}
           >
-            <Text>{formData.dateOfBirth.toLocaleDateString("vi-VN")}</Text>
+            <Text>{formData.dateOfBirth.toDateString()}</Text>
           </TouchableOpacity>
           {showDatePicker && (
             <DateTimePicker
@@ -472,8 +478,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   backButton: {
-    padding: 10,
-    marginBottom: 24,
+    marginTop: 32,
+    marginBottom: 64,
   },
   backButtonText: {
     fontSize: 24,

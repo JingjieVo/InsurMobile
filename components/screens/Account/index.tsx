@@ -1,36 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, StyleSheet, ActivityIndicator } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {LinearGradient} from 'expo-linear-gradient';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 // import Icon from 'react-native-vector-icons/MaterialIcons';
-import Icon from '@expo/vector-icons/AntDesign';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import guestAvatar from '@/assets/images/guest_avatar.png'
-import { Link, router } from 'expo-router';
-import { TabsBarHeight } from '@/constants/Height';
-import { logout } from '@/services/authService';
-import { getUserInfo } from '@/services/userService';
-import { useFetchUserData } from '@/hooks/useFetchUserData';
+import guestAvatar from "@/assets/images/guest_avatar.png";
+import { TabsBarHeight } from "@/constants/Height";
+import { useFetchUserData } from "@/hooks/useFetchUserData";
+import { logout } from "@/services/authService";
+import { getUserInfo } from "@/services/userService";
+import Icon from "@expo/vector-icons/AntDesign";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { router } from "expo-router";
 
-
-export default function AccountScreen () {
-
+export default function AccountScreen() {
   const handleLogout = async () => {
     await logout();
-    router.replace('/(tabs)/')
-  }
+    router.replace("/(tabs)/");
+  };
   const { user, loading, error } = useFetchUserData(getUserInfo);
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <ActivityIndicator style={{flex: 1, justifyContent: 'center'}} size="large" color="#0000ff" />;
   }
 
   if (error) {
     return (
       <View>
-        <Text style={{ color: 'red' }}>{error}</Text>
+        <Text style={{ color: "red" }}>{error}</Text>
       </View>
     );
   }
@@ -38,18 +43,15 @@ export default function AccountScreen () {
   if (!user) {
     return (
       <View>
-        <Text>No user data available</Text>
+        <Text>No user data availabl</Text>
       </View>
     );
   }
   return (
-    <LinearGradient colors={['#E6EEFF', '#FFFFFF']} style={styles.container}>
+    <LinearGradient colors={["#E6EEFF", "#FFFFFF"]} style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.profileHeader}>
-          <Image
-            source={guestAvatar}
-            style={styles.avatar}
-          />
+          <Image source={guestAvatar} style={styles.avatar} />
           <Text style={styles.profileName}>{user?.fullName}</Text>
           <Text style={styles.profilePoints}>Xu thành viên: 0 Điểm</Text>
         </View>
@@ -70,7 +72,10 @@ export default function AccountScreen () {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Dịch vụ</Text>
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity
+            onPress={() => router.push("/cardlist")}
+            style={styles.menuItem}
+          >
             <FontAwesome name="credit-card" size={24} color="#000" />
             <Text style={styles.menuText}>Thẻ bảo hiểm</Text>
             <FontAwesome name="chevron-right" size={24} color="#000" />
@@ -96,15 +101,12 @@ export default function AccountScreen () {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.languageButton}>
+        {/* <TouchableOpacity style={styles.languageButton}>
           <FontAwesome name="language" size={24} color="#007AFF" />
           <Text style={styles.languageButtonText}>English</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity 
-          style={styles.logoutButton}
-          onPress={handleLogout}
-        >
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Đăng xuất</Text>
         </TouchableOpacity>
 
@@ -114,16 +116,16 @@ export default function AccountScreen () {
       </ScrollView>
     </LinearGradient>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: StatusBar.currentHeight,
     flex: 1,
-    paddingBottom: TabsBarHeight
+    paddingBottom: TabsBarHeight,
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     right: 20,
     zIndex: 1,
@@ -131,37 +133,37 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 30,
   },
   phoneInputContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 20,
   },
   countryCode: {
     padding: 15,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
     borderRadius: 10,
     marginRight: 10,
   },
   phoneInput: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
     borderRadius: 10,
     padding: 15,
   },
   checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 30,
   },
   checkbox: {
@@ -169,31 +171,31 @@ const styles = StyleSheet.create({
   },
   checkboxText: {
     flex: 1,
-    color: '#666',
+    color: "#666",
   },
   link: {
-    color: '#007AFF',
-    textDecorationLine: 'underline',
+    color: "#007AFF",
+    textDecorationLine: "underline",
   },
   button: {
-    backgroundColor: '#FF69B4',
+    backgroundColor: "#FF69B4",
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonDisabled: {
     opacity: 0.5,
   },
   buttonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   scrollView: {
     flex: 1,
   },
   profileHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
   },
   avatar: {
@@ -204,64 +206,64 @@ const styles = StyleSheet.create({
   },
   profileName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   profilePoints: {
-    color: '#666',
+    color: "#666",
   },
   section: {
     padding: 20,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 15,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#EEE',
+    borderBottomColor: "#EEE",
   },
   menuText: {
     flex: 1,
     marginLeft: 15,
   },
   languageButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 15,
     margin: 20,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
     borderRadius: 10,
   },
   languageButtonText: {
-    color: '#007AFF',
+    color: "#007AFF",
     marginLeft: 10,
   },
   logoutButton: {
     margin: 20,
     padding: 15,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F5F5F5",
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   logoutButtonText: {
-    color: '#666',
+    color: "#666",
   },
   deleteAccountButton: {
     margin: 20,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   deleteAccountButtonText: {
-    color: '#FF3B30',
+    color: "#FF3B30",
   },
   guestHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 40,
   },
   guestAvatar: {
@@ -272,10 +274,10 @@ const styles = StyleSheet.create({
   },
   guestTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   guestSubtitle: {
-    color: '#666',
+    color: "#666",
   },
 });
