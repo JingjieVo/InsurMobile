@@ -8,46 +8,59 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import InsuraceCard from "@/components/InsuranceCard";
 import backgroundImage from "@/assets/images/background.jpg";
 import { getProducts } from "@/services/productService";
+import ScreenHeader from "@/components/Share/ScreenHeader";
+import ScreenContainer from "@/components/Share/ScreenContainer";
+import { ProductsResponse } from "@/type/productType";
 
-export default function InsuranceScreen() {
-  const [products, setProducts] = useState([]);
+export default function InsuranceList() {
+  const [products, setProducts] = useState<ProductsResponse>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getProducts();
         setProducts(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
-        console.error('Failed to fetch products:', error);
+        console.error("Failed to fetch products:", error);
       }
     };
 
     fetchData();
   }, []);
+  if (!products) {
+    return (
+      <ActivityIndicator
+        style={{ flex: 1, justifyContent: "center" }}
+        size="large"
+        color="#0000ff"
+      />
+    );
+  }
   return (
-    <ImageBackground
-      source={backgroundImage}
-      resizeMode="cover"
-      style={styles.image}
-    >
-      <BlurView intensity={120} tint="light" style={styles.container}>
-        {/* Header with Blur */}
-        <BlurView intensity={120} tint="light" style={styles.header}>
-          <Text style={styles.headerTitle}>Bảo Hiểm Sức Khoẻ</Text>
-        </BlurView>
+    <ScreenContainer>
+      {/* Header with Blur */}
+      <ScreenHeader screenTitle="Bảo hiểm sức khỏe" />
 
-        {/* Content */}
+      {/* Content */}
+      {products?.content.length === 0 ? (
+        <View>
+          <Text>Không tìm thấy sản phẩm nào</Text>
+        </View>
+      ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
-          {products.map((item, index) => <InsuraceCard key={index} product={item}/>)}
+          {products?.content.map((item, index) => (
+            <InsuraceCard key={index} product={item} />
+          ))}
         </ScrollView>
-      </BlurView>
-    </ImageBackground>
+      )}
+    </ScreenContainer>
   );
 }
 
@@ -60,16 +73,6 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#fff",
-  },
-  header: {
-    height: 68,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#000",
   },
   contentContainer: {
     margin: 18,
