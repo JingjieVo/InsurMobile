@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,27 +6,67 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Button,
   SafeAreaView,
+  Platform,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import { TabsBarHeight } from "@/constants/Height";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { getProviders } from "@/services/providerService";
+import { ProviderCountItem } from "@/type/providerType";
+import { Checkbox } from 'react-native-paper';
 
 export default function InsuranceScreen() {
   const [insuranceType, setInsuranceType] = useState("Sức Khỏe");
   const [gender, setGender] = useState("Nam");
-  const [birthdate, setBirthdate] = useState("27/11/2024");
+  const [birthdate, setBirthdate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [budget, setBudget] = useState(0);
-  const [insuranceCompanies, setInsuranceCompanies] = useState([
-    { name: "AAA", products: 41 },
-    { name: "GIC", products: 8 },
-    { name: "Bảo Minh", products: 63 },
-    { name: "BSH", products: 24 },
-  ]);
+  const [insuranceCompanies, setInsuranceCompanies] = useState<ProviderCountItem[]>([]);
+  const [selectedProviders, setSelectedProviders] = useState<number[]>([]);
   const [referralCode, setReferralCode] = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProviders = async () => {
+      try {
+        const data = await getProviders();
+        setInsuranceCompanies(data);
+      } catch (err) {
+        setError('Failed to fetch providers');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProviders();
+  }, []);
+
+  const toggleProviderSelection = (providerId: number) => {
+    setSelectedProviders(prevSelected => 
+      prevSelected.includes(providerId)
+        ? prevSelected.filter(id => id !== providerId)
+        : [...prevSelected, providerId]
+    );
+  };
+
+  const handleSearch = () => {
+    // Here you would typically call an API or filter the results
+    // based on the selected providers
+    console.log('Searching for providers with IDs:', selectedProviders);
+    // For now, we'll just navigate to the results page
+    router.push({
+      pathname: '/insurance',
+      params: { providerIds: selectedProviders.join(',') }
+    });
+  };
+
+  if (loading) return <ActivityIndicator />;
+  if (error) return <Text>{error}</Text>;
 
   return (
     <LinearGradient colors={["#E6EEFF", "#FFFFFF"]} style={styles.container}>
@@ -111,21 +151,34 @@ export default function InsuranceScreen() {
           </View>
 
           <Text style={styles.label}>Ngày sinh</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={birthdate}
-              onChangeText={setBirthdate}
-            />
+          <TouchableOpacity
+            style={styles.inputContainer}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={styles.input}>
+              {birthdate.toLocaleDateString('vi-VN')}
+            </Text>
             <Ionicons name="calendar" size={24} color="blue" />
-          </View>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={birthdate}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                const currentDate = selectedDate || birthdate;
+                setShowDatePicker(Platform.OS === 'ios');
+                setBirthdate(currentDate);
+              }}
+            />
+          )}
 
           <Text style={styles.label}>Ngân sách bạn dành cho bảo hiểm</Text>
           <TextInput
             style={styles.budgetInput}
             placeholder="0 - 20.000.000 vnd"
             keyboardType="numeric"
-            value={budget.toString()}
+            value={budget.toString() + " VND"}
             onChangeText={(value) => setBudget(Number(value))}
           />
           <Slider
@@ -144,24 +197,18 @@ export default function InsuranceScreen() {
             <Ionicons name="search" size={24} color="gray" />
           </View>
           {insuranceCompanies.map((company) => (
-            <View key={company.name} style={styles.companyContainer}>
+            <View key={company.providerId} style={styles.companyContainer}>
+              <Checkbox
+                status={selectedProviders.includes(company.providerId) ? 'checked' : 'unchecked'}
+                onPress={() => toggleProviderSelection(company.providerId)}
+              />
               <Text style={styles.companyText}>
-                {company.name} ({company.products} sản phẩm)
+                {company.providerName} ({company.countProduct} sản phẩm)
               </Text>
             </View>
           ))}
 
-          {/* <Text style={styles.label}>Mã giới thiệu</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder=""
-            value={referralCode}
-            onChangeText={setReferralCode}
-          />
-        </View> */}
-
-          <TouchableOpacity onPress={() => router.push('/insurance')} style={styles.filterButton}>
+          <TouchableOpacity onPress={handleSearch} style={styles.filterButton}>
             <Text style={styles.filterButtonText}>Lọc sản phẩm</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -173,7 +220,6 @@ export default function InsuranceScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#e8f0ff",
   },
   safeArea: {
     flex: 1,
@@ -243,6 +289,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   companyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 10,
   },
   companyText: {
@@ -263,3 +311,4 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+

@@ -37,7 +37,7 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
           <Text style={styles.sectionTitle}>Điểm nổi bật</Text>
           <RenderHtml
             contentWidth={width}
-            source={{ html: product.highlight }}
+            source={{ html: product.highlight ? product.highlight : `` }}
           />
         </View>
 

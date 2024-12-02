@@ -13,11 +13,13 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Picker } from "@react-native-picker/picker";
-import * as ImagePicker from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 import uploadImg from "@/assets/images/guest_avatar.png";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { router } from "expo-router";
+import Entypo from "@expo/vector-icons/Entypo";
 interface FormData {
-  dateOfBirth: any;
+  dateOfBirth: Date;
   fullName: string | undefined;
   isInsured: boolean | undefined;
   gender: "male" | "female";
@@ -41,6 +43,7 @@ interface FormErrors {
 }
 
 const BuyInsuranceScreen: React.FC = () => {
+  
   const [formData, setFormData] = useState<FormData>({
     phone: "",
     email: "",
@@ -56,18 +59,18 @@ const BuyInsuranceScreen: React.FC = () => {
     isInsured: true,
     gender: "male",
     fullName: "",
-    dateOfBirth: Date,
+    dateOfBirth: new Date(),
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
 
   const handleImagePick = async (type: "frontImage" | "backImage") => {
-    const options: ImagePicker.ImageLibraryOptions = {
-      mediaType: "photo",
-      quality: 1,
-    };
+    // const options: ImagePicker.ImageLibraryOptions = {
+    //   mediaType: "photo",
+    //   quality: 1,
+    // };
 
-    const result = await ImagePicker.launchImageLibrary(options);
+    const result = await ImagePicker.launchImageLibraryAsync();
     if (result.assets && result.assets[0] && result.assets[0].uri) {
       setFormData({
         ...formData,
@@ -98,8 +101,13 @@ const BuyInsuranceScreen: React.FC = () => {
     <LinearGradient colors={["#E6EEFF", "#FFFFFF"]} style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView style={styles.scrollView}>
-          <TouchableOpacity style={styles.backButton}>
-            <Text style={styles.backButtonText}>{"<"}</Text>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <View style={styles.backButtonCircle}>
+              <Entypo name="chevron-left" size={24} color="#000" />
+            </View>
           </TouchableOpacity>
 
           <Text style={styles.title}>Thông tin người được bảo hiểm</Text>
@@ -479,6 +487,14 @@ const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 24,
     fontWeight: "bold",
+  },
+  backButtonCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,

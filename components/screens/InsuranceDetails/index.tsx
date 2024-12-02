@@ -1,6 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -32,6 +33,15 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
     };
     fetch();
   }, []);
+  if (!product) {
+    return (
+      <ActivityIndicator
+        style={{ flex: 1, justifyContent: "center" }}
+        size="large"
+        color="#0000ff"
+      />
+    );
+  }
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -100,7 +110,6 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
             </View>
           </View>
         ))}
-        
       </ScrollView>
 
       {/* Bottom Section */}
@@ -119,7 +128,10 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push('/buyinsurance')} style={styles.buyButton}>
+          <TouchableOpacity
+            onPress={() => router.push("/buyinsurance")}
+            style={styles.buyButton}
+          >
             <Entypo name="shopping-cart" size={20} color="#fff" />
             <Text style={styles.buyButtonText}>Mua ngay</Text>
           </TouchableOpacity>

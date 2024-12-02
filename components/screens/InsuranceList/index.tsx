@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import InsuraceCard from "@/components/InsuranceCard";
@@ -33,6 +34,15 @@ export default function InsuranceList() {
 
     fetchData();
   }, []);
+  if (!products) {
+    return (
+      <ActivityIndicator
+        style={{ flex: 1, justifyContent: "center" }}
+        size="large"
+        color="#0000ff"
+      />
+    );
+  }
   return (
     <ScreenContainer>
       {/* Header with Blur */}

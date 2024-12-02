@@ -1,4 +1,4 @@
-import { Contract, ContractResponse } from "@/type/contractType";
+import { Contract, ContractDetailResponse, ContractResponse } from "@/type/contractType";
 import { apiClient } from "@/utils/api";
 
 
@@ -21,3 +21,14 @@ export const getUserContracts = async (): Promise<ContractResponse> => {
       throw error;
     }
   };
+
+
+export const getContractDetail = async (contractId: number): Promise<ContractDetailResponse> => {
+  try {
+    const response = await apiClient.get(`/contracts/${contractId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching contract detail:', error);
+    throw error;
+  }
+};

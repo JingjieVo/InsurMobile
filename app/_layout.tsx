@@ -18,6 +18,8 @@ LogBox.ignoreLogs([
   "TNodeChildrenRenderer: Support for defaultProps will be removed from function components",
   "MemoizedTNodeRenderer: Support for defaultProps will be removed from memo components",
   "TRenderEngineProvider: Support for defaultProps will be removed from function components in a future major release.",
+  "No source prop was provided. Nothing will be rendered",
+  "TRenderEngineProvider: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead."
 ]);
 export default function RootLayout() {
   const colorScheme = useColorScheme();

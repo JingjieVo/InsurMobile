@@ -22,7 +22,7 @@ import { Link, router, useFocusEffect } from "expo-router";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
 import { getUserInfo } from "@/services/userService";
 import { getUserToken } from "@/services/authService";
-import Header from "./Header";
+
 import guestAvatar from "@/assets/images/guest_avatar.png";
 
 const categories = [
@@ -59,7 +59,7 @@ export default function HomeScreen() {
 
     // Khi đang tải dữ liệu
     if (loading) {
-      return <ActivityIndicator size="large" color="#0000ff" />;
+      return <ActivityIndicator style={{flex: 1, justifyContent: 'center'}} size="large" color="#0000ff" />;
     }
 
     // Nếu có lỗi

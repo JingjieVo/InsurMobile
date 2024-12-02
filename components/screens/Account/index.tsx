@@ -40,13 +40,13 @@ export default function AccountScreen() {
     );
   }
 
-  if (!user) {
-    return (
-      <View>
-        <Text>No user data availabl</Text>
-      </View>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <View>
+  //       <Text>No user data availabl</Text>
+  //     </View>
+  //   );
+  // }
   return (
     <LinearGradient colors={["#E6EEFF", "#FFFFFF"]} style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -80,7 +80,7 @@ export default function AccountScreen() {
             <Text style={styles.menuText}>Thẻ bảo hiểm</Text>
             <FontAwesome name="chevron-right" size={24} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity onPress={() => router.push('/contract')} style={styles.menuItem}>
             <MaterialIcons name="description" size={24} color="#000" />
             <Text style={styles.menuText}>Hợp đồng bảo hiểm</Text>
             <FontAwesome name="chevron-right" size={24} color="#000" />

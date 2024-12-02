@@ -10,6 +10,7 @@ export const getUserInfo = async () => {
         const decoded: DecodedToken = jwtDecode(userToken);
         const userId = decoded.userId;
         const response = await apiClient.get<UserResponse>(`users/${userId}`);
+
         return response.data.data;
       }
       return null;
