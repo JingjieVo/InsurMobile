@@ -61,7 +61,7 @@ const InsuranceCardScreen = ({ }) => {
       </View>
 
       {/* Bottom Button */}
-      <TouchableOpacity style={styles.bottomButton}>
+      <TouchableOpacity onPress={() => router.push('/claimRequest')} style={styles.bottomButton}>
         <Icon name="time" size={24} color="#fff" />
         <Text style={styles.bottomButtonText}>Yêu Cầu Bồi Thường</Text>
       </TouchableOpacity>
@@ -71,7 +71,7 @@ const InsuranceCardScreen = ({ }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: '#F5F5F5',
   },

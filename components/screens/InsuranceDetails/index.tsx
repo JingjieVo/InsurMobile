@@ -21,18 +21,56 @@ import { router } from "expo-router";
 const InsuranceDetailsScreen = (props: { id: string }) => {
   const tabs = ["Đồng", "Bạc"];
   const [product, setProduct] = useState<ProductDetailResponse>();
+  const [selectedSideTerms, setSelectedSideTerms] = useState<number[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+
   useEffect(() => {
     const fetch = async () => {
       try {
         const data = await getProductById(props.id);
         setProduct(data);
-        // console.log(data);
+        setTotalPrice(data.price); // Set initial price
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
     };
     fetch();
   }, []);
+
+  useEffect(() => {
+    if (product) {
+      const sideTermsPrice = selectedSideTerms.reduce((total, termId) => {
+        const term = product.sideTerms.find(t => t.id === termId);
+        return total + (term?.amount|| 0);
+      }, 0);
+      setTotalPrice(product.price + sideTermsPrice);
+    }
+  }, [selectedSideTerms, product]);
+
+  const toggleSideTerm = (termId: number) => {
+    setSelectedSideTerms(prev =>
+      prev.includes(termId)
+        ? prev.filter(id => id !== termId)
+        : [...prev, termId]
+    );
+  };
+
+  const handleBuyInsurance = () => {
+    if (!product) return;
+
+    const insuranceData = {
+      productId: product.id,
+      mainTerms: product.mainTerms.map(term => ({ id: term.id })),
+      sideTerms: selectedSideTerms.map(id => ({ id })),
+      totalPrice: totalPrice,
+    };
+
+    router.push({
+      pathname: "/buyinsurance",
+      params: { insuranceData: JSON.stringify(insuranceData) },
+    });
+  };
+
   if (!product) {
     return (
       <ActivityIndicator
@@ -42,6 +80,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
       />
     );
   }
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -56,9 +95,9 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
         </TouchableOpacity>
         <View style={styles.headerContent}>
           <Text style={styles.headerTitle}>
-            Tai nạn cá nhân GIC - Gia Đình - Kim Cương
+            {product.name}
           </Text>
-          <Text style={styles.headerAmount}>901.250.000 VND</Text>
+          <Text style={styles.headerAmount}>{product.price.toLocaleString('vi-VN')} VND</Text>
         </View>
         <Image source={logo} style={styles.logo} />
       </LinearGradient>
@@ -68,10 +107,10 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
           {tabs.map((tab, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.tab, index === 3 && styles.activeTab]}
+              style={[styles.tab, index === 0 && styles.activeTab]}
             >
               <Text
-                style={[styles.tabText, index === 3 && styles.activeTabText]}
+                style={[styles.tabText, index === 0 && styles.activeTabText]}
               >
                 {tab}
               </Text>
@@ -80,35 +119,44 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
         </View>
         <Text style={styles.sectionTitle}>Quyền lợi chính</Text>
 
-        {/* Tabs */}
-
         {/* Benefits List */}
-        {product?.mainTerms.map((benefit, index) => (
+        {product.mainTerms.map((benefit, index) => (
           <View key={index} style={styles.benefitCard}>
             <View style={styles.benefitIcon}>
               <FontAwesome6 name="feather" size={24} color="#000" />
             </View>
             <View style={styles.benefitContent}>
               <Text style={styles.benefitTitle}>{benefit.name}</Text>
-              <Text style={styles.benefitAmount}>{benefit.amount}</Text>
+              <Text style={styles.benefitAmount}>{benefit.amount.toLocaleString('vi-VN')} VND</Text>
             </View>
           </View>
         ))}
         <Text style={styles.sectionTitle}>Quyền lợi phụ</Text>
 
-        {/* Tabs */}
-
-        {/* Benefits List */}
-        {product?.sideTerms.map((benefit, index) => (
-          <View key={index} style={styles.benefitCard}>
+        {/* Side Benefits List */}
+        {product.sideTerms.map((benefit, index) => (
+          <TouchableOpacity 
+            key={index} 
+            style={[
+              styles.benefitCard,
+              selectedSideTerms.includes(benefit.id) && styles.selectedBenefitCard
+            ]}
+            onPress={() => toggleSideTerm(benefit.id)}
+          >
             <View style={styles.benefitIcon}>
               <FontAwesome6 name="feather" size={24} color="#000" />
             </View>
             <View style={styles.benefitContent}>
               <Text style={styles.benefitTitle}>{benefit.name}</Text>
-              <Text style={styles.benefitAmount}>{benefit.amount}</Text>
+              <Text style={styles.benefitAmount}>{benefit.amount.toLocaleString('vi-VN')} VND</Text>
+              <Text style={styles.benefitPrice}>+{benefit.amount.toLocaleString('vi-VN')} VND</Text>
             </View>
-          </View>
+            <View style={styles.checkbox}>
+              {selectedSideTerms.includes(benefit.id) && (
+                <FontAwesome6 name="check" size={16} color="#002D84" />
+              )}
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
 
@@ -116,7 +164,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
       <View style={styles.bottomSection}>
         <View style={styles.insuranceFee}>
           <Text style={styles.feeLabel}>Phí bảo hiểm</Text>
-          <Text style={styles.feeAmount}>1.200.000 VND</Text>
+          <Text style={styles.feeAmount}>{totalPrice.toLocaleString('vi-VN')} VND</Text>
         </View>
 
         <View style={styles.bottomActions}>
@@ -129,7 +177,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => router.push("/buyinsurance")}
+            onPress={handleBuyInsurance}
             style={styles.buyButton}
           >
             <Entypo name="shopping-cart" size={20} color="#fff" />
@@ -230,6 +278,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
   },
+  selectedBenefitCard: {
+    backgroundColor: "#E6F2FF",
+  },
   benefitIcon: {
     width: 40,
     height: 40,
@@ -249,6 +300,20 @@ const styles = StyleSheet.create({
   benefitAmount: {
     fontSize: 16,
     fontWeight: "bold",
+  },
+  benefitPrice: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 4,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: "#002D84",
+    alignItems: "center",
+    justifyContent: "center",
   },
   bottomSection: {
     backgroundColor: "#fff",

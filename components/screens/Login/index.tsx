@@ -13,7 +13,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {LinearGradient} from 'expo-linear-gradient';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 import Icon from '@expo/vector-icons/AntDesign';
