@@ -278,7 +278,7 @@ const BuyInsuranceScreen: React.FC = () => {
 
           <View style={styles.section}>
             <Text style={styles.label}>ĐỊA CHỈ</Text>
-            <View style={styles.pickerContainer}>
+            {/* <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={formData.province}
                 onValueChange={(value) =>
@@ -286,10 +286,18 @@ const BuyInsuranceScreen: React.FC = () => {
                 }
                 style={styles.picker}
               >
-                <Picker.Item label="Tỉnh/Thành phố" value="" />
-                {/* Add provinces here */}
-              </Picker>
-            </View>
+                <Picker.Item label="Tỉnh/Thành phố" value="" /> */}
+                  {/* Add provinces here */}
+              {/* </Picker> */}
+            {/* </View> */}
+            <TextInput
+              style={styles.input}
+              placeholder="Tỉnh/thành phố"
+              value={formData.province}
+              onChangeText={(text) =>
+                setFormData({ ...formData, province: text })
+              }
+            />
             <TextInput
               style={styles.input}
               placeholder="Quận/huyện"
@@ -360,7 +368,7 @@ const BuyInsuranceScreen: React.FC = () => {
               <Text style={styles.errorText}>{errors.idNumber}</Text>
             )}
 
-            <View style={styles.imageUploadContainer}>
+            {/* <View style={styles.imageUploadContainer}>
               <TouchableOpacity
                 style={styles.imageUploadButton}
                 onPress={() => handleImagePick("frontImage")}
@@ -388,7 +396,7 @@ const BuyInsuranceScreen: React.FC = () => {
                 />
                 <Text style={styles.uploadText}>Mặt Sau</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
           <TouchableOpacity

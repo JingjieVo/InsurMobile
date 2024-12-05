@@ -1,16 +1,15 @@
-import React from 'react';
+import { apiClient } from "@/utils/api";
+import { FontAwesome } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
+import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
   Alert,
-} from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
-import axios from 'axios';
-import { FontAwesome } from '@expo/vector-icons';
-import { apiClient } from '@/utils/api';
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface InsuranceRequestBody {
   startDate: string;
@@ -39,7 +38,9 @@ interface InsuranceRequestBody {
 
 export default function InsuranceConfirmScreen() {
   const params = useLocalSearchParams();
-  const requestBody: InsuranceRequestBody = JSON.parse(params.requestBody as string);
+  const requestBody: InsuranceRequestBody = JSON.parse(
+    params.requestBody as string
+  );
 
   const handleEdit = () => {
     router.back();
@@ -47,6 +48,7 @@ export default function InsuranceConfirmScreen() {
 
   const handleConfirm = async () => {
     try {
+      // console.log(requestBody);
       const response = await apiClient.post('contracts', requestBody);
       if (response.status === 200) {
         // Assuming the API returns payment details in the response
@@ -68,8 +70,8 @@ export default function InsuranceConfirmScreen() {
         throw new Error("Failed to purchase insurance");
       }
     } catch (error) {
-      console.error("Error purchasing insurance:", error);
-      Alert.alert("Lỗi", "Không thể đăng ký bảo hiểm. Vui lòng thử lại.");
+      // console.error("Error purchasing insurance:", error);
+      Alert.alert("Sai Thông Tin", "Sai thông tin đăng ký bảo hiểm. Vui lòng thử lại.");
     }
   };
 
@@ -83,7 +85,7 @@ export default function InsuranceConfirmScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Người được bảo hiểm</Text>
           <Text style={styles.name}>
-            {requestBody.gender === 'Male' ? 'Ông' : 'Bà'}. {requestBody.name}
+            {requestBody.gender === "Male" ? "Ông" : "Bà"}. {requestBody.name}
           </Text>
         </View>
 
@@ -95,24 +97,24 @@ export default function InsuranceConfirmScreen() {
           <View style={styles.infoColumn}>
             <Text style={styles.label}>Ngày sinh</Text>
             <Text style={styles.value}>
-              {new Date(requestBody.dob).toLocaleDateString('vi-VN')}
+              {new Date(requestBody.dob).toLocaleDateString("vi-VN")}
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Thông tin liên hệ</Text>
-          
+
           <View style={styles.contactInfo}>
             <Text style={styles.label}>Điện thoại</Text>
             <Text style={styles.value}>{requestBody.phone}</Text>
           </View>
-          
+
           <View style={styles.contactInfo}>
             <Text style={styles.label}>Email</Text>
             <Text style={styles.value}>{requestBody.email}</Text>
           </View>
-          
+
           <View style={styles.contactInfo}>
             <Text style={styles.label}>Địa chỉ</Text>
             <Text style={styles.value}>{requestBody.address}</Text>
@@ -121,21 +123,19 @@ export default function InsuranceConfirmScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Tổng chi phí</Text>
-          <Text style={styles.totalPrice}>
-            IDR {requestBody.totalPrice}
-          </Text>
+          <Text style={styles.totalPrice}>IDR {requestBody.totalPrice}</Text>
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity 
-            style={[styles.button, styles.editButton]} 
+          <TouchableOpacity
+            style={[styles.button, styles.editButton]}
             onPress={handleEdit}
           >
             <Text style={styles.editButtonText}>Sửa thông tin</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={[styles.button, styles.confirmButton]} 
+
+          <TouchableOpacity
+            style={[styles.button, styles.confirmButton]}
             onPress={handleConfirm}
           >
             <Text style={styles.confirmButtonText}>Xác nhận</Text>
@@ -149,13 +149,13 @@ export default function InsuranceConfirmScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   content: {
     padding: 20,
   },
   avatarContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   section: {
@@ -163,19 +163,19 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginBottom: 12,
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
   },
   infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 24,
   },
   infoColumn: {
@@ -183,24 +183,24 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginBottom: 4,
   },
   value: {
     fontSize: 16,
-    color: '#000',
-    fontWeight: '500',
+    color: "#000",
+    fontWeight: "500",
   },
   contactInfo: {
     marginBottom: 16,
   },
   totalPrice: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FF69B4',
+    fontWeight: "bold",
+    color: "#FF69B4",
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 12,
     marginTop: 24,
   },
@@ -208,25 +208,24 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 16,
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   editButton: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
   },
   confirmButton: {
-    backgroundColor: '#FF69B4',
+    backgroundColor: "#FF69B4",
   },
   editButtonText: {
-    color: '#333',
+    color: "#333",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   confirmButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
-

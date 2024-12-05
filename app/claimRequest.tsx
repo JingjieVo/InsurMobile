@@ -13,7 +13,7 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
+import { createClaim } from '@/services/claimService';
 
 interface ClaimForm {
   contractId: number;
@@ -74,11 +74,9 @@ export default function ClaimFormScreen() {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('your-api-endpoint', form);
-      if (response.status === 200) {
-        Alert.alert('Thành công', 'Yêu cầu bồi thường đã được gửi');
-        router.back();
-      }
+      await createClaim(form);
+      Alert.alert('Thành công', 'Yêu cầu bồi thường đã được gửi');
+      router.back();
     } catch (error) {
       Alert.alert('Lỗi', 'Không thể gửi yêu cầu bồi thường');
     }

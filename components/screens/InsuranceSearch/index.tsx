@@ -65,7 +65,7 @@ export default function InsuranceScreen() {
     });
   };
 
-  if (loading) return <ActivityIndicator />;
+  if (loading) return  <ActivityIndicator style={{flex: 1, justifyContent: 'center'}} size="large" color="#0000ff" />;
   if (error) return <Text>{error}</Text>;
 
   return (

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import logo from "@/assets/images/react-logo.png";
 import { getProductById } from "@/services/productService";
@@ -41,7 +42,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
     if (product) {
       const sideTermsPrice = selectedSideTerms.reduce((total, termId) => {
         const term = product.sideTerms.find(t => t.id === termId);
-        return total + (term?.amount|| 0);
+        return total + (term?.amount || 0);
       }, 0);
       setTotalPrice(product.price + sideTermsPrice);
     }
@@ -55,20 +56,32 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
     );
   };
 
-  const handleBuyInsurance = () => {
+  const handleBuyInsurance = async () => {
     if (!product) return;
 
-    const insuranceData = {
-      productId: product.id,
-      mainTerms: product.mainTerms.map(term => ({ id: term.id })),
-      sideTerms: selectedSideTerms.map(id => ({ id })),
-      totalPrice: totalPrice,
-    };
+    // Check if user is logged in
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
 
-    router.push({
-      pathname: "/buyinsurance",
-      params: { insuranceData: JSON.stringify(insuranceData) },
-    });
+      const insuranceData = {
+        productId: product.id,
+        mainTerms: product.mainTerms.map(term => ({ id: term.id })),
+        sideTerms: selectedSideTerms.map(id => ({ id })),
+        totalPrice: totalPrice,
+      };
+
+      router.push({
+        pathname: "/buyinsurance",
+        params: { insuranceData: JSON.stringify(insuranceData) },
+      });
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      router.push('/login');
+    }
   };
 
   if (!product) {
@@ -375,3 +388,4 @@ const styles = StyleSheet.create({
 });
 
 export default InsuranceDetailsScreen;
+
