@@ -1,8 +1,5 @@
 {
   "build": {
-    "cli": {
-      "version": ">= 12.5.1"
-    },
     "preview": {
       "android": {
         "buildType": "apk"
