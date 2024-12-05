@@ -1,27 +1,26 @@
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useState } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
+  Image,
+  SafeAreaView,
+  ScrollView,
   StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 // import Icon from 'react-native-vector-icons/MaterialIcons';
-import Icon from "@expo/vector-icons/AntDesign";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import insuranceCard from "@/assets/images/insurance-card.jpg";
 import { TabsBarHeight } from "@/constants/Height";
-import { Link, router, useFocusEffect } from "expo-router";
 import { useFetchUserData } from "@/hooks/useFetchUserData";
-import { getUserInfo } from "@/services/userService";
 import { getUserToken } from "@/services/authService";
+import { getUserInfo } from "@/services/userService";
+import Icon from "@expo/vector-icons/AntDesign";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Link, router, useFocusEffect } from "expo-router";
 
 import guestAvatar from "@/assets/images/guest_avatar.png";
 
@@ -59,7 +58,13 @@ export default function HomeScreen() {
 
     // Khi đang tải dữ liệu
     if (loading) {
-      return <ActivityIndicator style={{flex: 1, justifyContent: 'center'}} size="large" color="#0000ff" />;
+      return (
+        <ActivityIndicator
+          style={{ flex: 1, justifyContent: "center" }}
+          size="large"
+          color="#0000ff"
+        />
+      );
     }
 
     // Nếu có lỗi
@@ -180,6 +185,24 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
 
+            <TouchableOpacity style={homeStyles.productCard}>
+              <Image source={insuranceCard} style={homeStyles.productImage} />
+              <View style={homeStyles.productBadge}>
+                <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={homeStyles.productCard}>
+              <Image source={insuranceCard} style={homeStyles.productImage} />
+              <View style={homeStyles.productBadge}>
+                <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={homeStyles.productCard}>
+              <Image source={insuranceCard} style={homeStyles.productImage} />
+              <View style={homeStyles.productBadge}>
+                <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity style={homeStyles.productCard}>
               <Image source={insuranceCard} style={homeStyles.productImage} />
               <View style={homeStyles.productBadge}>
@@ -366,6 +389,7 @@ export const homeStyles = StyleSheet.create({
   productCard: {
     borderRadius: 12,
     overflow: "hidden",
+    marginBottom: 16,
   },
   productImage: {
     width: "100%",

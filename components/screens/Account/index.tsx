@@ -25,7 +25,7 @@ import { router } from "expo-router";
 export default function AccountScreen() {
   const handleLogout = async () => {
     await logout();
-    router.replace("/(tabs)/");
+    router.replace("/(tabs)");
   };
   const { user, loading, error } = useFetchUserData(getUserInfo);
   if (loading) {
@@ -120,7 +120,7 @@ export default function AccountScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
     flex: 1,
     paddingBottom: TabsBarHeight,
   },

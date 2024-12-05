@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  ActivityIndicator,
   FlatList,
   StyleSheet,
   Text,
-  ActivityIndicator,
-  TouchableOpacity,
+  View,
 } from "react-native";
 
-import { router } from "expo-router";
 import { ContractListItem } from "@/components/ContractListItem";
-import { Contract } from "@/type/contractType";
-import { getUserContracts } from "@/services/contractService";
-import { FontAwesome } from "@expo/vector-icons";
-import Icon from '@expo/vector-icons/Ionicons';
 import ScreenHeader from "@/components/ScreenHeader";
+import { getUserContracts } from "@/services/contractService";
+import { Contract } from "@/type/contractType";
+import { router } from "expo-router";
 
 export default function ContractListScreen() {
   const [contracts, setContracts] = useState<Contract[]>([]);
@@ -62,14 +59,16 @@ export default function ContractListScreen() {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader title="Hợp đồng"/>
-      <FlatList
-        data={contracts}
-        renderItem={({ item }) => (
-          <ContractListItem contract={item} onPress={handleContractPress} />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-      />
+      <ScreenHeader title="Hợp đồng" />
+      <View style={{padding: 16}}>
+        <FlatList
+          data={contracts}
+          renderItem={({ item }) => (
+            <ContractListItem contract={item} onPress={handleContractPress} />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </View>
     </View>
   );
 }
@@ -78,22 +77,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F5F7FF",
-    padding: 16,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#000',
+    fontWeight: "600",
+    color: "#000",
   },
   headerRight: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   headerIcon: {
     marginLeft: 16,

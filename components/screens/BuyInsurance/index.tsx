@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,18 +10,21 @@ import {
   Platform,
   SafeAreaView,
   Switch,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import uploadImg from "@/assets/images/guest_avatar.png";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
+import axios from 'axios';
+
 interface FormData {
   dateOfBirth: Date;
-  fullName: string | undefined;
-  isInsured: boolean | undefined;
+  fullName: string;
+  isInsured: boolean;
   gender: "male" | "female";
   phone: string;
   email: string;
@@ -42,7 +45,16 @@ interface FormErrors {
   idNumber?: string;
 }
 
+interface InsuranceData {
+  productId: number;
+  mainTerms: { id: number }[];
+  sideTerms: { id: number }[];
+  totalPrice: number;
+}
+
 const BuyInsuranceScreen: React.FC = () => {
+  const params = useLocalSearchParams();
+  const [insuranceData, setInsuranceData] = useState<InsuranceData | null>(null);
   
   const [formData, setFormData] = useState<FormData>({
     phone: "",
@@ -63,15 +75,23 @@ const BuyInsuranceScreen: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  useEffect(() => {
+    if (params.insuranceData) {
+      setInsuranceData(JSON.parse(params.insuranceData as string));
+    }
+  }, [params.insuranceData]);
 
   const handleImagePick = async (type: "frontImage" | "backImage") => {
-    // const options: ImagePicker.ImageLibraryOptions = {
-    //   mediaType: "photo",
-    //   quality: 1,
-    // };
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-    const result = await ImagePicker.launchImageLibraryAsync();
-    if (result.assets && result.assets[0] && result.assets[0].uri) {
+    if (!result.canceled && result.assets && result.assets[0]) {
       setFormData({
         ...formData,
         [type]: result.assets[0].uri,
@@ -89,13 +109,39 @@ const BuyInsuranceScreen: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleContinue = () => {
-    if (validateForm()) {
-      // Handle form submission
-      console.log("Form data:", formData);
+  const handleSubmit = () => {
+    if (validateForm() && insuranceData) {
+      const requestBody = {
+        startDate: new Date().toISOString().split('T')[0],
+        endDate: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        name: formData.fullName,
+        dob: formData.dateOfBirth.toISOString().split('T')[0],
+        gender: formData.gender === "male" ? "Male" : "Female",
+        identification: formData.idNumber,
+        phone: formData.phone,
+        email: formData.email,
+        address: `${formData.houseNumber} ${formData.street}, ${formData.ward}, ${formData.district}, ${formData.province}`,
+        contractDetailDTO: {
+          productId: insuranceData.productId,
+          name: formData.fullName,
+          dob: formData.dateOfBirth.toISOString().split('T')[0],
+          gender: formData.gender === "male" ? "Male" : "Female",
+          identification: formData.idNumber,
+          phone: formData.phone,
+          email: formData.email,
+          address: `${formData.houseNumber} ${formData.street}, ${formData.ward}, ${formData.district}, ${formData.province}`,
+          mainTerms: insuranceData.mainTerms,
+          sideTerms: insuranceData.sideTerms
+        },
+        totalPrice: insuranceData.totalPrice
+      };
+
+      router.push({
+        pathname: "/insuranceConfirmation",
+        params: { requestBody: JSON.stringify(requestBody) }
+      });
     }
   };
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   return (
     <LinearGradient colors={["#E6EEFF", "#FFFFFF"]} style={styles.container}>
@@ -193,7 +239,7 @@ const BuyInsuranceScreen: React.FC = () => {
               }}
             />
           )}
-          {/* Phone Input */}
+
           <View style={styles.section}>
             <Text style={styles.label}>SỐ ĐIỆN THOẠI</Text>
             <View style={styles.phoneInputContainer}>
@@ -215,7 +261,6 @@ const BuyInsuranceScreen: React.FC = () => {
             )}
           </View>
 
-          {/* Email Input */}
           <View style={styles.section}>
             <Text style={styles.label}>EMAIL</Text>
             <TextInput
@@ -231,10 +276,9 @@ const BuyInsuranceScreen: React.FC = () => {
             )}
           </View>
 
-          {/* Address Section */}
           <View style={styles.section}>
             <Text style={styles.label}>ĐỊA CHỈ</Text>
-            <View style={styles.pickerContainer}>
+            {/* <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={formData.province}
                 onValueChange={(value) =>
@@ -242,10 +286,18 @@ const BuyInsuranceScreen: React.FC = () => {
                 }
                 style={styles.picker}
               >
-                <Picker.Item label="Tỉnh/Thành phố" value="" />
-                {/* Add provinces here */}
-              </Picker>
-            </View>
+                <Picker.Item label="Tỉnh/Thành phố" value="" /> */}
+                  {/* Add provinces here */}
+              {/* </Picker> */}
+            {/* </View> */}
+            <TextInput
+              style={styles.input}
+              placeholder="Tỉnh/thành phố"
+              value={formData.province}
+              onChangeText={(text) =>
+                setFormData({ ...formData, province: text })
+              }
+            />
             <TextInput
               style={styles.input}
               placeholder="Quận/huyện"
@@ -278,7 +330,6 @@ const BuyInsuranceScreen: React.FC = () => {
             />
           </View>
 
-          {/* ID Document Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Giấy tờ tuỳ thân</Text>
             <View style={styles.idTypeContainer}>
@@ -317,7 +368,7 @@ const BuyInsuranceScreen: React.FC = () => {
               <Text style={styles.errorText}>{errors.idNumber}</Text>
             )}
 
-            <View style={styles.imageUploadContainer}>
+            {/* <View style={styles.imageUploadContainer}>
               <TouchableOpacity
                 style={styles.imageUploadButton}
                 onPress={() => handleImagePick("frontImage")}
@@ -345,14 +396,14 @@ const BuyInsuranceScreen: React.FC = () => {
                 />
                 <Text style={styles.uploadText}>Mặt Sau</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
           <TouchableOpacity
             style={styles.continueButton}
-            onPress={handleContinue}
+            onPress={handleSubmit}
           >
-            <Text style={styles.continueButtonText}>Tiếp tục</Text>
+            <Text style={styles.continueButtonText}>Mua bảo hiểm</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
@@ -371,7 +422,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-
   section: {
     marginBottom: 24,
   },
@@ -396,7 +446,6 @@ const styles = StyleSheet.create({
   phoneInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-
     marginBottom: 12,
   },
   countryCode: {
@@ -534,17 +583,6 @@ const styles = StyleSheet.create({
   genderTextActive: {
     color: "white",
   },
-  // label: {
-  //   fontSize: 16,
-  //   marginBottom: 8,
-  // },
-  // input: {
-  //   height: 40,
-  //   borderColor: "gray",
-  //   borderWidth: 1,
-  //   marginBottom: 24,
-  //   paddingHorizontal: 10,
-  // },
   datePickerButton: {
     backgroundColor: "white",
     borderRadius: 8,
@@ -554,3 +592,4 @@ const styles = StyleSheet.create({
 });
 
 export default BuyInsuranceScreen;
+

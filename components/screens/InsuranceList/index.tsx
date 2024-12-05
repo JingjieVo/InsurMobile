@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginTop: StatusBar.currentHeight,
+    // marginTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#fff",
   },

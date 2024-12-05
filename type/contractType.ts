@@ -33,6 +33,8 @@ export interface ContractSubDetail {
   contractSideTerms: ContractTerm[];
 }
 
+
+
 export interface ContractDetail {
   createdAt: string;
   modifiedAt: string;
@@ -60,7 +62,6 @@ interface ContractTerm {
   amount: number;
   price?: number | null;
 }
-
 
 
 export interface ContractResponse {
