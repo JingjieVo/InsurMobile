@@ -40,7 +40,7 @@ export default function ClaimFormScreen() {
     contractId: 28,
     amountClaim: 0,
     note: '',
-    description: '',
+    description: 'Tai nạn',
     upload: '',
     name: '',
     phone: '',
@@ -101,7 +101,7 @@ export default function ClaimFormScreen() {
               styles.typeButton,
               form.claimType === 'accident' && styles.typeButtonActive,
             ]}
-            onPress={() => setForm({ ...form, claimType: 'accident' })}
+            onPress={() => setForm({ ...form, claimType: 'accident', description: 'Tai nạn' })}
           >
             <Text style={[
               styles.typeText,
@@ -113,7 +113,7 @@ export default function ClaimFormScreen() {
               styles.typeButton,
               form.claimType === 'traffic' && styles.typeButtonActive,
             ]}
-            onPress={() => setForm({ ...form, claimType: 'traffic' })}
+            onPress={() => setForm({ ...form, claimType: 'traffic', description: 'Tai nạn giao thông' })}
           >
             <Text style={[
               styles.typeText,
