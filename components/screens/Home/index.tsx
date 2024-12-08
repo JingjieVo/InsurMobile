@@ -23,24 +23,47 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, router, useFocusEffect } from "expo-router";
 
 import guestAvatar from "@/assets/images/guest_avatar.png";
+import { getUserContracts } from "@/services/contractService";
+import { Contract } from "@/type/contractType";
 
 const categories = [
   { id: 1, name: "Sức khỏe", icon: "favorite" },
-  { id: 2, name: "Xe máy", icon: "favorite" },
-  { id: 3, name: "Ô tô", icon: "favorite" },
-  { id: 4, name: "Nhà ở", icon: "favorite" },
-  { id: 5, name: "Du lịch", icon: "favorite" },
+  // { id: 2, name: "Xe máy", icon: "favorite" },
+  // { id: 3, name: "Ô tô", icon: "favorite" },
+  // { id: 4, name: "Nhà ở", icon: "favorite" },
+  // { id: 5, name: "Du lịch", icon: "favorite" },
 ];
 
 export default function HomeScreen() {
   const [isLogin, setIsLogin] = useState(false);
   const { user, loading, error } = useFetchUserData(getUserInfo);
-
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [loadingContract, setLoading] = useState(true);
+  const [errorContract, setError] = useState<string | null>(null);
   useFocusEffect(
     useCallback(() => {
       const checkUserIsLogin = async () => {
         const userToken = await getUserToken();
         setIsLogin(userToken !== "none");
+        if (userToken !== "none") {
+          const fetchContracts = async () => {
+            try {
+              // Replace with your actual API endpoint
+              const response = await getUserContracts();
+              const data = response;
+              if (data.status === "OK") {
+                setContracts(data.data);
+              } else {
+                setError("Failed to fetch contracts");
+              }
+            } catch (err) {
+              setError("An error occurred while fetching contracts");
+            } finally {
+              setLoading(false);
+            }
+          };
+          fetchContracts();
+        }
       };
       checkUserIsLogin();
     }, [])
@@ -164,7 +187,9 @@ export default function HomeScreen() {
               <MaterialIcons name="description" size={24} color="#007AFF" />
               <View style={homeStyles.statContent}>
                 <Text style={homeStyles.statTitle}>Hợp đồng</Text>
-                <Text style={homeStyles.statValue}>0 hợp đồng</Text>
+                <Text style={homeStyles.statValue}>
+                  {contracts?.length || 0} hợp đồng
+                </Text>
               </View>
             </View>
             <View style={homeStyles.statCard}>
@@ -185,24 +210,6 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={homeStyles.productCard}>
-              <Image source={insuranceCard} style={homeStyles.productImage} />
-              <View style={homeStyles.productBadge}>
-                <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={homeStyles.productCard}>
-              <Image source={insuranceCard} style={homeStyles.productImage} />
-              <View style={homeStyles.productBadge}>
-                <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={homeStyles.productCard}>
-              <Image source={insuranceCard} style={homeStyles.productImage} />
-              <View style={homeStyles.productBadge}>
-                <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
-              </View>
-            </TouchableOpacity>
             <TouchableOpacity style={homeStyles.productCard}>
               <Image source={insuranceCard} style={homeStyles.productImage} />
               <View style={homeStyles.productBadge}>
@@ -261,7 +268,7 @@ export const homeStyles = StyleSheet.create({
   },
   categories: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
     paddingVertical: 16,
   },
   categoryItem: {
@@ -389,7 +396,7 @@ export const homeStyles = StyleSheet.create({
   productCard: {
     borderRadius: 12,
     overflow: "hidden",
-    marginBottom: 16,
+    marginVertical: 16,
   },
   productImage: {
     width: "100%",

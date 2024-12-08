@@ -1,4 +1,4 @@
-import { apiClient } from "@/utils/api";
+import { apiClient, apiClientNoAuth } from "@/utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 
@@ -20,6 +20,20 @@ export const login = async (data: LoginData): Promise<boolean> => {
     return false;
   }
 };
+
+
+
+export const registerUser = async (userData: RegistrationData) => {
+  try {
+    const response = await apiClientNoAuth.post('users/register', userData);
+    return response.data;
+  } catch (error) {
+    console.error('Registration error:', error);
+    throw error;
+  }
+};
+
+
 
 export const logout = async () => {
   try {

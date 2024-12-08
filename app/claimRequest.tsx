@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,13 @@ import {
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
 import { createClaim } from '@/services/claimService';
+import { uploadFile } from '@/services/uploadFile';
+import { Picker } from "@react-native-picker/picker";
+import { getUserContracts } from '@/services/contractService';
+import { Contract } from '@/type/contractType';
+
 
 interface ClaimForm {
   contractId: number;
@@ -37,7 +42,7 @@ interface ClaimForm {
 
 export default function ClaimFormScreen() {
   const [form, setForm] = useState<ClaimForm>({
-    contractId: 28,
+    contractId: 0,
     amountClaim: 0,
     note: '',
     description: '',
@@ -58,26 +63,72 @@ export default function ClaimFormScreen() {
 
   const [showAdmissionDate, setShowAdmissionDate] = useState(false);
   const [showDischargeDate, setShowDischargeDate] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchContracts = async () => {
+      try {
+        const response = await getUserContracts();
+        const data = response;
+        if (data.status === "OK") {
+          setContracts(data.data);
+          if (data.data.length > 0) {
+            setForm(prevForm => ({ ...prevForm, contractId: data.data[0].id }));
+          }
+        } else {
+          setError("Failed to fetch contracts");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching contracts");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContracts();
+  }, []);
 
-  const handlePickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    if (!result.canceled && result.assets[0]) {
-      setForm({ ...form, upload: result.assets[0].uri });
+  const handlePickDocument = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: '*/*', // all file types
+        copyToCacheDirectory: false,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const file = result.assets[0];
+        try {
+          const uploadedFileUrl = await uploadFile({
+            uri: file.uri,
+            type: file.mimeType || "",
+            name: file.name,
+          });
+          setForm({ ...form, upload: uploadedFileUrl });
+          setFileName(file.name);
+        } catch (error) {
+          console.error('Error uploading file:', error);
+          Alert.alert('Error', 'Failed to upload file. Please try again.');
+        }
+      }
+    } catch (err) {
+      console.error('Error picking document:', err);
+      Alert.alert('Error', 'Failed to pick document. Please try again.');
     }
   };
 
   const handleSubmit = async () => {
     try {
+      if (!form.upload) {
+        Alert.alert('Error', 'Please upload a document before submitting.');
+        return;
+      }
       await createClaim(form);
       Alert.alert('Thành công', 'Yêu cầu bồi thường đã được gửi');
       router.back();
     } catch (error) {
+      console.error('Error submitting claim:', error);
       Alert.alert('Lỗi', 'Không thể gửi yêu cầu bồi thường');
     }
   };
@@ -120,6 +171,26 @@ export default function ClaimFormScreen() {
               form.claimType === 'traffic' && styles.typeTextActive,
             ]}>Tai nạn giao thông</Text>
           </TouchableOpacity>
+        </View>
+
+        <Text style={styles.label}>CHỌN HỢP ĐỒNG</Text>
+        <View style={styles.pickerContainer}>
+          <Picker
+            selectedValue={form.contractId}
+            onValueChange={(itemValue) =>
+              setForm({ ...form, contractId: itemValue })
+            }
+            style={styles.picker}
+          >
+            <Picker.Item label="Chọn hợp đồng" value="" />
+            {contracts.map((contract) => (
+              <Picker.Item
+                key={contract.id}
+                label={`${contract.productName} - ${contract.id}`}
+                value={contract.id}
+              />
+            ))}
+          </Picker>
         </View>
 
         <Text style={styles.label}>NGÀY KHÁM/NHẬP VIỆN</Text>
@@ -214,9 +285,11 @@ export default function ClaimFormScreen() {
           onChangeText={(text) => setForm({ ...form, bankNameOwner: text })}
         />
 
-        <TouchableOpacity style={styles.uploadButton} onPress={handlePickImage}>
+        <TouchableOpacity style={styles.uploadButton} onPress={handlePickDocument}>
           <Ionicons name="cloud-upload-outline" size={24} color="#4A90E2" />
-          <Text style={styles.uploadText}>Tải lên chứng từ</Text>
+          <Text style={styles.uploadText}>
+            {fileName ? `File uploaded: ${fileName}` : 'Tải lên chứng từ'}
+          </Text>
         </TouchableOpacity>
 
         <TextInput
@@ -370,6 +443,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+  },
+  pickerContainer: {
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#E5E5E5",
+  },
+  picker: {
+    height: 50,
   },
 });
 

@@ -11,7 +11,7 @@
 // }
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, StyleSheet, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {LinearGradient} from 'expo-linear-gradient';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -31,7 +31,12 @@ export default function LoginScreen ({ }) {
       role_id: 2,
     })
     if (loginUser) {
+      Alert.alert("Đăng nhập thành công")
       router.replace('/(tabs)')
+    }
+    else {
+      Alert.alert("Sai số điện thoại hoặc mật khẩu")
+
     }
   }
   return (
@@ -91,6 +96,12 @@ export default function LoginScreen ({ }) {
           onPress={handleLogin}
         >
           <Text style={styles.buttonText}>Tiếp tục</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+        style={{alignItems: 'center'}}
+          onPress={() => router.push('/registration')}
+        >
+          <Text style={{color: 'red', padding: 16}}>Đăng ký tại đây</Text>
         </TouchableOpacity>
       </View>
     </LinearGradient>

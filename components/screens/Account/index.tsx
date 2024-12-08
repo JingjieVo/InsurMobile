@@ -58,7 +58,7 @@ export default function AccountScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Cài đặt tài khoản</Text>
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity onPress={() => router.push("/profile")} style={styles.menuItem}>
             <FontAwesome6 name="person" size={24} color="#000" />
             <Text style={styles.menuText}>Thông tin cá nhân</Text>
             <FontAwesome name="chevron-right" size={24} color="#000" />

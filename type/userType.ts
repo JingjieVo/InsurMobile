@@ -36,3 +36,31 @@ interface UserData {
   dateOfBirth: string | null; // Ngày sinh (có thể null)
   avatar: string;       // Tên file avatar
 }
+
+interface UserProfile {
+  fullName: string;
+  phoneNumber: string;
+  address: string;
+  email: string;
+  dateOfBirth: string | null;
+  avatar: string;
+}
+interface UserProfileResponse {
+  message: string;
+  status: string;
+  data: UserProfile;
+}
+
+
+
+interface RegistrationData {
+  fullname: string;
+  phone_number: string;
+  address: string;
+  password: string;
+  email: string;
+  retype_password: string;
+  date_of_birth: string;
+  avatar: string;
+  role_id: number;
+}

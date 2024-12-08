@@ -12,6 +12,9 @@ import ScreenHeader from "@/components/ScreenHeader";
 import { getUserContracts } from "@/services/contractService";
 import { Contract } from "@/type/contractType";
 import { router } from "expo-router";
+import Icon from "@expo/vector-icons/Ionicons";
+
+// import { Icon } from "react-native-paper";
 
 export default function ContractListScreen() {
   const [contracts, setContracts] = useState<Contract[]>([]);
@@ -60,15 +63,25 @@ export default function ContractListScreen() {
   return (
     <View style={styles.container}>
       <ScreenHeader title="Hợp đồng" />
-      <View style={{padding: 16}}>
-        <FlatList
-          data={contracts}
-          renderItem={({ item }) => (
-            <ContractListItem contract={item} onPress={handleContractPress} />
-          )}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
+      {contracts.length === 0 ? (
+        <View style={styles.noCardContainer}>
+          {/* <View style={styles.iconContainer}>
+            <Icon name="shield-outline" size={40} color="#B0C4DE" />
+          </View> */}
+          <Text style={styles.noCardText}>Bạn Chưa Có</Text>
+          <Text style={styles.noCardText}>Hợp Đồng Nào</Text>
+        </View>
+      ) : (
+        <View style={{ padding: 16 }}>
+          <FlatList
+            data={contracts}
+            renderItem={({ item }) => (
+              <ContractListItem contract={item} onPress={handleContractPress} />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -95,5 +108,26 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     marginLeft: 16,
+  },
+  noCardContainer: {
+    backgroundColor: "#fff",
+    margin: 16,
+    padding: 32,
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  iconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#F0F8FF",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 16,
+  },
+  noCardText: {
+    fontSize: 16,
+    color: "#808080",
+    lineHeight: 24,
   },
 });

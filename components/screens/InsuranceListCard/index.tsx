@@ -1,10 +1,15 @@
+import insuranceCard from "@/assets/images/insurance-card.jpg";
 import { getClaims } from "@/services/claimService";
+import { getUserContracts } from "@/services/contractService";
 import { Claim } from "@/type/claimType";
+import { Contract } from "@/type/contractType";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Icon from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import {
+  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -12,9 +17,18 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { homeStyles } from "../Home";
 const InsuranceCardScreen = ({}) => {
   const [claims, setClaims] = useState<Claim[]>([]);
+  const [contracts, setContracts] = useState<Contract[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  const y = useRef();
+
+  function onRefresh() {
+    router.reload();
+  }
   useEffect(() => {
     const fetchClaims = async () => {
       try {
@@ -27,6 +41,23 @@ const InsuranceCardScreen = ({}) => {
       }
     };
 
+    const fetchContracts = async () => {
+      try {
+        // Replace with your actual API endpoint
+        const response = await getUserContracts();
+        const data = response;
+        if (data.status === "OK") {
+          setContracts(data.data);
+        } else {
+          setError("Failed to fetch contracts");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching contracts");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContracts();
     fetchClaims();
   }, []);
   return (
@@ -49,13 +80,22 @@ const InsuranceCardScreen = ({}) => {
 
       {/* Main Content */}
       <ScrollView style={styles.content}>
-        <View style={styles.noCardContainer}>
-          <View style={styles.iconContainer}>
-            <Icon name="shield-outline" size={40} color="#B0C4DE" />
+        {contracts.length > 0 ? (
+          <TouchableOpacity style={homeStyles.productCard}>
+            <Image source={insuranceCard} style={homeStyles.productImage} />
+            <View style={homeStyles.productBadge}>
+              <Text style={homeStyles.badgeText}>BH Sức Khỏe</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.noCardContainer}>
+            <View style={styles.iconContainer}>
+              <Icon name="shield-outline" size={40} color="#B0C4DE" />
+            </View>
+            <Text style={styles.noCardText}>Bạn Chưa Có Thẻ</Text>
+            <Text style={styles.noCardText}>Bảo Hiểm Nào</Text>
           </View>
-          <Text style={styles.noCardText}>Bạn Chưa Có Thẻ</Text>
-          <Text style={styles.noCardText}>Bảo Hiểm Nào</Text>
-        </View>
+        )}
 
         {/* Tabs */}
         <View style={styles.tabContainer}>
@@ -87,28 +127,45 @@ const InsuranceCardScreen = ({}) => {
         </View>
         <View style={styles.claimsSection}>
           <Text style={styles.claimsTitle}>YÊU CẦU BỒI THƯỜNG</Text>
-          {claims.map((claim) => (
-            <View key={claim.id} style={styles.claimItem}>
-              <View style={styles.claimInfo}>
-                <Text style={styles.claimItemTitle}>{claim.description}</Text>
-                <Text style={styles.claimAmount}>
-                  {claim.amountClaim.toLocaleString("vi-VN")} VND
-                </Text>
+          {claims.length > 0 ? (
+            claims.map((claim) => (
+              <View key={claim.id} style={styles.claimItem}>
+                <View style={styles.claimInfo}>
+                  <Text style={styles.claimItemTitle}>{claim.description}</Text>
+                  <Text style={styles.claimAmount}>
+                    {claim.amountClaim.toLocaleString("vi-VN")} VND
+                  </Text>
+                </View>
+                <View
+                  style={[
+                    styles.claimStatus,
+                    claim.status === 0
+                      ? styles.statusPending
+                      : claim.status === 1
+                      ? styles.statusApproved
+                      : styles.statusDeclined,
+                  ]}
+                >
+                  <Text style={styles.statusText}>
+                    {claim.status === 0
+                      ? "Đang chờ"
+                      : claim.status === 1
+                      ? "Đã duyệt"
+                      : "Từ Chối"}
+                  </Text>
+                </View>
               </View>
-              <View
-                style={[
-                  styles.claimStatus,
-                  claim.status === 0
-                    ? styles.statusPending
-                    : styles.statusApproved,
-                ]}
-              >
-                <Text style={styles.statusText}>
-                  {claim.status === 0 ? "Đang chờ" : "Đã duyệt"}
-                </Text>
-              </View>
+            ))
+          ) : (
+            <View style={styles.noCardContainer}>
+              {/* <View style={styles.iconContainer}>
+            <Icon name="shield-outline" size={40} color="#B0C4DE" />
+          </View> */}
+              <Text style={styles.noCardText}>Bạn Chưa Có</Text>
+              <Text style={styles.noCardText}>Yêu Cầu Bồi Thường Nào</Text>
             </View>
-          ))}
+          )}
+          {}
         </View>
       </ScrollView>
 
@@ -279,14 +336,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   statusPending: {
-    backgroundColor: "#FFF0F5",
+    backgroundColor: "yellow",
   },
   statusApproved: {
-    backgroundColor: "#F0FFF0",
+    backgroundColor: "green",
+  },
+  statusDeclined: {
+    backgroundColor: "red",
   },
   statusText: {
     fontSize: 12,
     fontWeight: "500",
+    color: "white",
   },
 });
 
