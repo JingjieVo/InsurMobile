@@ -24,7 +24,7 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
     <View style={styles.contentContainer}>
       <View style={styles.content}>
         <View style={styles.insuranceCard}>
-          <View>
+          <View style={{}}>
             <Text style={styles.cardTitle}>
               {product.name} {product.id}
             </Text>
@@ -95,12 +95,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#002850",
     borderRadius: 15,
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     marginBottom: 20,
   },
   cardTitle: {
     fontSize: 16,
     color: "#FFF",
+    maxWidth: 200
   },
   cardAmount: {
     fontSize: 24,

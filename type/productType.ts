@@ -4,6 +4,7 @@ interface Term {
   name: string;
   description: string;
   amount: number;
+  price?: number;
   icon: string;
 }
 

@@ -25,12 +25,13 @@ export default function InsuranceScreen() {
   const [birthdate, setBirthdate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [budget, setBudget] = useState(0);
+  const [initProvider, setInitProvider] = useState("");
   const [insuranceCompanies, setInsuranceCompanies] = useState<ProviderCountItem[]>([]);
   const [selectedProviders, setSelectedProviders] = useState<number[]>([]);
   const [referralCode, setReferralCode] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [name, setName] = useState<string>("")
   useEffect(() => {
     const fetchProviders = async () => {
       try {
@@ -44,6 +45,7 @@ export default function InsuranceScreen() {
     };
 
     fetchProviders();
+    // setInitProvider(insuranceCompanies.map((item) => item.providerId).join(','))
   }, []);
 
   const toggleProviderSelection = (providerId: number) => {
@@ -57,11 +59,11 @@ export default function InsuranceScreen() {
   const handleSearch = () => {
     // Here you would typically call an API or filter the results
     // based on the selected providers
-    console.log('Searching for providers with IDs:', selectedProviders);
+    console.log('Searching for providers with IDs:', name);
     // For now, we'll just navigate to the results page
     router.push({
       pathname: '/insurance',
-      params: { providerIds: selectedProviders.join(',') }
+      params: { providerIds: selectedProviders.join(',') , productName: name.toString() }
     });
   };
 
@@ -178,7 +180,7 @@ export default function InsuranceScreen() {
             style={styles.budgetInput}
             placeholder="0 - 20.000.000 vnd"
             keyboardType="numeric"
-            value={budget.toString() + " VND"}
+            value={budget.toLocaleString('VN-vi') + " VND"}
             onChangeText={(value) => setBudget(Number(value))}
           />
           <Slider
@@ -191,9 +193,9 @@ export default function InsuranceScreen() {
             maximumTrackTintColor="gray"
           />
 
-          <Text style={styles.label}>Nhà bảo hiểm</Text>
+          <Text style={styles.label}>Tìm kiếm theo tên gói bảo hiểm</Text>
           <View style={styles.inputContainer}>
-            <TextInput style={styles.input} placeholder="Tìm kiếm..." />
+            <TextInput onChangeText={(value) => setName(value)} style={styles.input} placeholder="Tìm kiếm..." />
             <Ionicons name="search" size={24} color="gray" />
           </View>
           {insuranceCompanies.map((company) => (

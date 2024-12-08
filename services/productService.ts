@@ -9,15 +9,47 @@ const TOKEN_USER = 'eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZU51bWJlciI6IjA0NDQ0NDQ0NDQiLCJ
 
 
 // Define the service function to get products
-export const getProducts = async  () : Promise<ProductsResponse> => {
+export const getProducts = async (
+  providerIds: string | string[],
+  productName: string | string[]
+): Promise<ProductsResponse> => {
+  // Khởi tạo URL cơ bản
+  let url = 'products/list';
+
+  // Xử lý tham số query
+  const queryParams: Record<string, string> = {};
+
+  // Xử lý `providerIds`
+  if (Array.isArray(providerIds) && providerIds.length > 0) {
+    queryParams.providerId = providerIds.join(','); // Nối mảng thành chuỗi
+  } else if (typeof providerIds === 'string' && providerIds.trim().length > 0) {
+    queryParams.providerId = providerIds.trim(); // Sử dụng chuỗi trực tiếp
+  }
+
+  // Xử lý `productName`
+  if (Array.isArray(productName) && productName.length > 0) {
+    queryParams.productName = productName.join(','); // Nối mảng thành chuỗi
+  } else if (typeof productName === 'string' && productName.trim().length > 0) {
+    queryParams.productName = productName.trim(); // Sử dụng chuỗi trực tiếp
+  }
+
+  // Gắn các tham số query vào URL
+  const queryString = new URLSearchParams(queryParams).toString();
+  if (queryString) {
+    url += `?${queryString}`;
+  }
+
+  // Gọi API
   try {
-    const response = await apiClient.get('products/list');
+    const response = await apiClient.get(url);
     return response.data;
   } catch (error) {
     console.error('Error fetching products:', error);
     throw error;
   }
 };
+
+
 
 export const getProductById = async (id: string) : Promise<ProductDetailResponse> => {
   try {

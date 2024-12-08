@@ -18,13 +18,19 @@ import ScreenHeader from "@/components/Share/ScreenHeader";
 import ScreenContainer from "@/components/Share/ScreenContainer";
 import { ProductsResponse } from "@/type/productType";
 
-export default function InsuranceList() {
+
+interface InsuranceListProps {
+  providerIds: string | string[]
+  productName: string | string[];
+}
+
+export default function InsuranceList(props : InsuranceListProps) {
   const [products, setProducts] = useState<ProductsResponse>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getProducts();
+        const data = await getProducts(props.providerIds, props.productName);
         setProducts(data);
         // console.log(data);
       } catch (error) {
@@ -50,7 +56,7 @@ export default function InsuranceList() {
 
       {/* Content */}
       {products?.content.length === 0 ? (
-        <View>
+        <View style={{alignItems: 'center', padding: 16}}>
           <Text>Không tìm thấy sản phẩm nào</Text>
         </View>
       ) : (

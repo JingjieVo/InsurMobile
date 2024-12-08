@@ -42,7 +42,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
     if (product) {
       const sideTermsPrice = selectedSideTerms.reduce((total, termId) => {
         const term = product.sideTerms.find(t => t.id === termId);
-        return total + (term?.amount || 0);
+        return total + (term?.price || 0);
       }, 0);
       setTotalPrice(product.price + sideTermsPrice);
     }
@@ -162,7 +162,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
             <View style={styles.benefitContent}>
               <Text style={styles.benefitTitle}>{benefit.name}</Text>
               <Text style={styles.benefitAmount}>{benefit.amount.toLocaleString('vi-VN')} VND</Text>
-              <Text style={styles.benefitPrice}>+{benefit.amount.toLocaleString('vi-VN')} VND</Text>
+              <Text style={styles.benefitPrice}>+{benefit.price?.toLocaleString('vi-VN')} VND</Text>
             </View>
             <View style={styles.checkbox}>
               {selectedSideTerms.includes(benefit.id) && (

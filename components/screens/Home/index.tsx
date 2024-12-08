@@ -183,7 +183,7 @@ export default function HomeScreen() {
 
           {/* Stats Cards */}
           <View style={homeStyles.statsContainer}>
-            <TouchableOpacity onPress={() => isLogin ? router.push("/contract") : {}}  style={homeStyles.statCard}>
+            <TouchableOpacity onPress={() => isLogin ? router.push("/contract") : router.push("/login")}  style={homeStyles.statCard}>
               <MaterialIcons name="description" size={24} color="#007AFF" />
               <View style={homeStyles.statContent}>
                 <Text style={homeStyles.statTitle}>Hợp đồng</Text>
