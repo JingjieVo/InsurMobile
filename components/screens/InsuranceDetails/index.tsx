@@ -198,7 +198,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.termsLink}>
+        <TouchableOpacity onPress={() => router.push("/policies")} style={styles.termsLink}>
           <Text style={styles.termsText}>
             Xem thêm về điều khoản, chính sách và thông tin khác của bảo hiểm
             này
