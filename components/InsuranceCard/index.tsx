@@ -1,4 +1,4 @@
-import { Product } from "@/type/productType";
+import { ProductItem } from "@/type/productType";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -18,7 +18,7 @@ const source = {
 <div><ol><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li><li>Điểm nổi bật 1</li></ol></div>`,
 };
 
-export default function InsuraceCard({ product }: { product: Product }) {
+export default function InsuraceCard({ product }: { product: ProductItem }) {
   const { width } = useWindowDimensions();
   return (
     <View style={styles.contentContainer}>
@@ -37,7 +37,7 @@ export default function InsuraceCard({ product }: { product: Product }) {
           <Text style={styles.sectionTitle}>Điểm nổi bật</Text>
           <RenderHtml
             contentWidth={width}
-            source={{ html: product.highlight }}
+            source={{ html: product.highlight ? product.highlight : `` }}
           />
         </View>
 
@@ -70,6 +70,7 @@ export default function InsuraceCard({ product }: { product: Product }) {
 const styles = StyleSheet.create({
   contentContainer: {
     margin: 18,
+    minHeight: 500,
     backgroundColor: "white",
     borderRadius: 10,
     shadowColor: "#000",
@@ -84,6 +85,8 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
+    flex: 1,
+    justifyContent: 'space-evenly'
   },
   insuranceCard: {
     display: "flex",
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: "#000",
+    color: "white",
     fontWeight: "bold",
   },
 });

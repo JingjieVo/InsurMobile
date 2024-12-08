@@ -3,10 +3,14 @@ import { router } from "expo-router";
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 
-export default function BackButton() {
+
+interface BackButtonProps {
+  fill: string;
+}
+export default function BackButton(props : BackButtonProps) {
   return (
     <TouchableOpacity onPress={() => router.back()}>
-      <AntDesign name="leftcircle" size={30} color="#06BCEE" />
+      <AntDesign name="leftcircle" size={40} color={props.fill} />
     </TouchableOpacity>
   );
 }

@@ -19,7 +19,7 @@ export default function ScreenContainer({children}: {children : React.ReactNode}
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight,
+    // marginTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#fff",
   },

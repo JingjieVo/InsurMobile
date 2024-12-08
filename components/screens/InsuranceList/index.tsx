@@ -8,6 +8,7 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import InsuraceCard from "@/components/InsuranceCard";
@@ -15,15 +16,16 @@ import backgroundImage from "@/assets/images/background.jpg";
 import { getProducts } from "@/services/productService";
 import ScreenHeader from "@/components/Share/ScreenHeader";
 import ScreenContainer from "@/components/Share/ScreenContainer";
+import { ProductsResponse } from "@/type/productType";
 
-export default function InsuranceScreen() {
-  const [products, setProducts] = useState([]);
+export default function InsuranceList() {
+  const [products, setProducts] = useState<ProductsResponse>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getProducts();
-        setProducts(data.content);
+        setProducts(data);
         // console.log(data);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -32,17 +34,32 @@ export default function InsuranceScreen() {
 
     fetchData();
   }, []);
+  if (!products) {
+    return (
+      <ActivityIndicator
+        style={{ flex: 1, justifyContent: "center" }}
+        size="large"
+        color="#0000ff"
+      />
+    );
+  }
   return (
     <ScreenContainer>
       {/* Header with Blur */}
       <ScreenHeader screenTitle="Bảo hiểm sức khỏe" />
 
       {/* Content */}
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {products.map((item, index) => (
-          <InsuraceCard key={index} product={item} />
-        ))}
-      </ScrollView>
+      {products?.content.length === 0 ? (
+        <View>
+          <Text>Không tìm thấy sản phẩm nào</Text>
+        </View>
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {products?.content.map((item, index) => (
+            <InsuraceCard key={index} product={item} />
+          ))}
+        </ScrollView>
+      )}
     </ScreenContainer>
   );
 }
@@ -53,7 +70,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    marginTop: StatusBar.currentHeight,
+    // marginTop: StatusBar.currentHeight,
     flex: 1,
     backgroundColor: "#fff",
   },

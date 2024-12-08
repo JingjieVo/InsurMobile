@@ -14,7 +14,7 @@ export default function ScreenHeader(props: ScreenHeaderProps) {
     <BlurView intensity={120} tint="light" style={styles.header}>
       <Text style={styles.headerTitle}>{props.screenTitle}</Text>
       <View style={styles.backButton}>
-        <BackButton />
+        <BackButton fill="#06BCEE" />
       </View>
     </BlurView>
   );
