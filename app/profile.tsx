@@ -67,6 +67,7 @@ export default function ProfileEditScreen() {
             phoneNumber: data.phoneNumber,
             email: data.email,
             dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : null,
+
           }));
         }
       } catch (error) {
@@ -115,6 +116,7 @@ export default function ProfileEditScreen() {
           }
         }
       });
+      
 
       const response = await updateUserProfile(formData);
       if (response.status === 'OK') {

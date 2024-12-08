@@ -45,7 +45,7 @@ export const getUserInfo = async () => {
   
   export const updateUserProfile = async (profileData: FormData): Promise<UserProfileResponse> => {
     try {
-      const response = await apiClient.put('user/profile', profileData, {
+      const response = await apiClient.put('users', profileData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
