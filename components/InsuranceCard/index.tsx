@@ -28,7 +28,7 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
             <Text style={styles.cardTitle}>
               {product.name} {product.id}
             </Text>
-            <Text style={styles.cardAmount}>901.250.000 vnd</Text>
+            <Text style={styles.cardAmount}>{(product.price + 10000000).toLocaleString('vi-VN')} VND</Text>
           </View>
           <Image source={insurLogo} style={styles.logo} />
         </View>
@@ -43,7 +43,7 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
 
         <View style={styles.feeSection}>
           <Text style={styles.feeTitle}>Phí bảo hiểm</Text>
-          <Text style={styles.feeAmount}>{product.price} vnd</Text>
+          <Text style={styles.feeAmount}>{product.price.toLocaleString('vi-VN')} VND</Text>
         </View>
 
         <View style={styles.buttonContainer}>

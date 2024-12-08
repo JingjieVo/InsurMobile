@@ -4,3 +4,12 @@ export interface ProviderCountItem {
     countProduct: number;
   }
   
+
+export interface Provider {
+  id: number;
+  address: string;
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  avatar?: "";
+}

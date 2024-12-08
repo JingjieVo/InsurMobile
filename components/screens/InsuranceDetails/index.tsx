@@ -116,7 +116,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
       </LinearGradient>
 
       <ScrollView style={styles.content}>
-        <View style={styles.tabContainer}>
+        {/* <View style={styles.tabContainer}>
           {tabs.map((tab, index) => (
             <TouchableOpacity
               key={index}
@@ -129,7 +129,7 @@ const InsuranceDetailsScreen = (props: { id: string }) => {
               </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </View> */}
         <Text style={styles.sectionTitle}>Quyền lợi chính</Text>
 
         {/* Benefits List */}
