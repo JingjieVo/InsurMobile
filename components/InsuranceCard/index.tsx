@@ -25,10 +25,11 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
       <View style={styles.content}>
         <View style={styles.insuranceCard}>
           <View style={{}}>
-            <Text style={styles.cardTitle}>
-              {product.name} {product.id}
+            <Text style={styles.cardTitle}>Mã sản phẩm: {product.id}</Text>
+            <Text style={styles.cardTitle}>{product.name}</Text>
+            <Text style={styles.cardAmount}>
+              {(product.price + 10000000).toLocaleString("vi-VN")} VND
             </Text>
-            <Text style={styles.cardAmount}>{(product.price + 10000000).toLocaleString('vi-VN')} VND</Text>
           </View>
           <Image source={insurLogo} style={styles.logo} />
         </View>
@@ -43,7 +44,9 @@ export default function InsuraceCard({ product }: { product: ProductItem }) {
 
         <View style={styles.feeSection}>
           <Text style={styles.feeTitle}>Phí bảo hiểm</Text>
-          <Text style={styles.feeAmount}>{product.price.toLocaleString('vi-VN')} VND</Text>
+          <Text style={styles.feeAmount}>
+            {product.price.toLocaleString("vi-VN")} VND
+          </Text>
         </View>
 
         <View style={styles.buttonContainer}>
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     flex: 1,
-    justifyContent: 'space-evenly'
+    justifyContent: "space-evenly",
   },
   insuranceCard: {
     display: "flex",
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     color: "#FFF",
-    maxWidth: 200
+    maxWidth: 200,
   },
   cardAmount: {
     fontSize: 24,
