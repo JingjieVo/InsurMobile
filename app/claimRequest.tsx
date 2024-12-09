@@ -126,7 +126,7 @@ export default function ClaimFormScreen() {
       }
       await createClaim(form);
       Alert.alert('Thành công', 'Yêu cầu bồi thường đã được gửi');
-      router.back();
+      router.replace('/cardlist');
     } catch (error) {
       console.error('Error submitting claim:', error);
       Alert.alert('Lỗi', 'Không thể gửi yêu cầu bồi thường');

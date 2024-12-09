@@ -131,7 +131,7 @@ const InsuranceCardScreen = ({}) => {
             claims.map((claim) => (
               <View key={claim.id} style={styles.claimItem}>
                 <View style={styles.claimInfo}>
-                  <Text style={styles.claimItemTitle}>{claim.description}</Text>
+                  <Text style={styles.claimItemTitle}>{claim.createdAt}</Text>
                   <Text style={styles.claimAmount}>
                     {claim.amountClaim.toLocaleString("vi-VN")} VND
                   </Text>
@@ -171,7 +171,7 @@ const InsuranceCardScreen = ({}) => {
 
       {/* Bottom Button */}
       <TouchableOpacity
-        onPress={() => router.push("/claimRequest")}
+        onPress={() => router.replace("/claimRequest")}
         style={styles.bottomButton}
       >
         <Icon name="time" size={24} color="#fff" />
